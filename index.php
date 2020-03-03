@@ -1,162 +1,468 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Интернет-магазин \"Одежда\"");
+$APPLICATION->SetTitle("Кондиционеры в Воронеже");
 ?>
-<?if (IsModuleInstalled("advertising")):?>
-	<div class="mb-5">
-		<?$APPLICATION->IncludeComponent(
-			"bitrix:advertising.banner",
-			"bootstrap_v4",
-			array(
-				"COMPONENT_TEMPLATE" => "bootstrap_v4",
-				"TYPE" => "MAIN",
-				"NOINDEX" => "Y",
-				"QUANTITY" => "3",
-				"BS_EFFECT" => "fade",
-				"BS_CYCLING" => "N",
-				"BS_WRAP" => "Y",
-				"BS_PAUSE" => "Y",
-				"BS_KEYBOARD" => "Y",
-				"BS_ARROW_NAV" => "Y",
-				"BS_BULLET_NAV" => "Y",
-				"BS_HIDE_FOR_TABLETS" => "N",
-				"BS_HIDE_FOR_PHONES" => "Y",
-				"CACHE_TYPE" => "A",
-				"CACHE_TIME" => "36000000",
-			),
-			false
-		);?>
-	</div>
-<?endif?>
 
-<?
-global $trendFilter;
-$trendFilter = array('PROPERTY_TREND' => '4');
-?>
-<h2>Тренды сезона</h2>
-<?$APPLICATION->IncludeComponent(
-	"bitrix:catalog.section",
-	"bootstrap_v4",
-	array(
-		"IBLOCK_TYPE_ID" => "catalog",
-		"IBLOCK_ID" => "2",
-		"BASKET_URL" => "/personal/cart/",
-		"COMPONENT_TEMPLATE" => "",
-		"IBLOCK_TYPE" => "catalog",
-		"SECTION_ID" => $_REQUEST["SECTION_ID"],
-		"SECTION_CODE" => "",
-		"SECTION_USER_FIELDS" => array(
-			0 => "",
-			1 => "",
-		),
-		"ELEMENT_SORT_FIELD" => "sort",
-		"ELEMENT_SORT_ORDER" => "desc",
-		"ELEMENT_SORT_FIELD2" => "id",
-		"ELEMENT_SORT_ORDER2" => "desc",
-		"FILTER_NAME" => "trendFilter",
-		"INCLUDE_SUBSECTIONS" => "Y",
-		"SHOW_ALL_WO_SECTION" => "Y",
-		"HIDE_NOT_AVAILABLE" => "N",
-		"PAGE_ELEMENT_COUNT" => "12",
-		"LINE_ELEMENT_COUNT" => "3",
-		"PROPERTY_CODE" => array(
-			0 => "NEWPRODUCT",
-			1 => "",
-		),
-		"OFFERS_FIELD_CODE" => array(
-			0 => "",
-			1 => "",
-		),
-		"OFFERS_PROPERTY_CODE" => array(
-			0 => "COLOR_REF",
-			1 => "SIZES_SHOES",
-			2 => "SIZES_CLOTHES",
-			3 => "",
-		),
-		"OFFERS_SORT_FIELD" => "sort",
-		"OFFERS_SORT_ORDER" => "desc",
-		"OFFERS_SORT_FIELD2" => "id",
-		"OFFERS_SORT_ORDER2" => "desc",
-		"TEMPLATE_THEME" => "site",
-		"PRODUCT_DISPLAY_MODE" => "Y",
-		"ADD_PICT_PROP" => "MORE_PHOTO",
-		"LABEL_PROP" => array(
-			0 => "NEWPRODUCT"
-		),
-		"OFFER_ADD_PICT_PROP" => "-",
-		"OFFER_TREE_PROPS" => array(
-			0 => "COLOR_REF",
-			1 => "SIZES_SHOES",
-			2 => "SIZES_CLOTHES",
-		),
-		"PRODUCT_SUBSCRIPTION" => "N",
-		"SHOW_DISCOUNT_PERCENT" => "N",
-		"SHOW_OLD_PRICE" => "Y",
-		"SHOW_CLOSE_POPUP" => "N",
-		"MESS_BTN_BUY" => "Купить",
-		"MESS_BTN_ADD_TO_BASKET" => "В корзину",
-		"MESS_BTN_SUBSCRIBE" => "Подписаться",
-		"MESS_BTN_DETAIL" => "Подробнее",
-		"MESS_NOT_AVAILABLE" => "Нет в наличии",
-		"SECTION_URL" => "",
-		"DETAIL_URL" => "",
-		"SECTION_ID_VARIABLE" => "SECTION_ID",
-		"SEF_MODE" => "N",
-		"AJAX_MODE" => "N",
-		"AJAX_OPTION_JUMP" => "N",
-		"AJAX_OPTION_STYLE" => "Y",
-		"AJAX_OPTION_HISTORY" => "N",
-		"AJAX_OPTION_ADDITIONAL" => "",
-		"CACHE_TYPE" => "A",
-		"CACHE_TIME" => "36000000",
-		"CACHE_GROUPS" => "Y",
-		"SET_TITLE" => "Y",
-		"SET_BROWSER_TITLE" => "Y",
-		"BROWSER_TITLE" => "-",
-		"SET_META_KEYWORDS" => "Y",
-		"META_KEYWORDS" => "-",
-		"SET_META_DESCRIPTION" => "Y",
-		"META_DESCRIPTION" => "-",
-		"SET_LAST_MODIFIED" => "N",
-		"USE_MAIN_ELEMENT_SECTION" => "N",
-		"ADD_SECTIONS_CHAIN" => "N",
-		"CACHE_FILTER" => "N",
-		"ACTION_VARIABLE" => "action",
-		"PRODUCT_ID_VARIABLE" => "id",
-		"PRICE_CODE" => array(
-			0 => "BASE",
-		),
-		"USE_PRICE_COUNT" => "N",
-		"SHOW_PRICE_COUNT" => "1",
-		"PRICE_VAT_INCLUDE" => "Y",
-		"CONVERT_CURRENCY" => "N",
-		"USE_PRODUCT_QUANTITY" => "N",
-		"PRODUCT_QUANTITY_VARIABLE" => "",
-		"ADD_PROPERTIES_TO_BASKET" => "Y",
-		"PRODUCT_PROPS_VARIABLE" => "prop",
-		"PARTIAL_PRODUCT_PROPERTIES" => "N",
-		"PRODUCT_PROPERTIES" => array(
-		),
-		"OFFERS_CART_PROPERTIES" => array(
-			0 => "COLOR_REF",
-			1 => "SIZES_SHOES",
-			2 => "SIZES_CLOTHES",
-		),
-		"ADD_TO_BASKET_ACTION" => "ADD",
-		"PAGER_TEMPLATE" => "round",
-		"DISPLAY_TOP_PAGER" => "N",
-		"DISPLAY_BOTTOM_PAGER" => "Y",
-		"PAGER_TITLE" => "Товары",
-		"PAGER_SHOW_ALWAYS" => "N",
-		"PAGER_DESC_NUMBERING" => "N",
-		"PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
-		"PAGER_SHOW_ALL" => "N",
-		"PAGER_BASE_LINK_ENABLE" => "N",
-		"SET_STATUS_404" => "N",
-		"SHOW_404" => "N",
-		"MESSAGE_404" => "",
-		"COMPATIBLE_MODE" => "N",
-	),
-	false
-);?>
+<main class="main-content">
+
+    <div class="main-section">
+        <div class="container">
+            <div class="main-slider">
+                <div class="main-slide">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 order-md-2">
+                            <h1 class="main-slide_title tablet-small_visible">
+                                Кондиционеры <br> в Воронеже
+                            </h1>
+                            <div class="main-slide_img">
+                                <img data-src="img/static/main-slider/01.png" alt="alt">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h1 class="main-slide_title tablet-small_hidden">
+                                Кондиционеры <br> в Воронеже
+                            </h1>
+                            <p>
+                                Мы предлагаем широкий выбор кондиционеров и сплит-систем
+                                на любой вкус и достаток, а также качественную установку
+                                и сервисное обслуживание
+                            </p>
+                            <a href="" class="main-btn main-slide_btn">В каталог</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-slide">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 order-md-2">
+                            <div class="main-slide_title tablet-small_visible">
+                                Кондиционеры <br> в Воронеже
+                            </div>
+                            <div class="main-slide_img">
+                                <img data-src="img/static/main-slider/01.png" alt="alt">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="main-slide_title tablet-small_hidden">
+                                Кондиционеры <br> в Воронеже
+                            </div>
+                            <p>
+                                Мы предлагаем широкий выбор кондиционеров и сплит-систем
+                                на любой вкус и достаток, а также качественную установку
+                                и сервисное обслуживание
+                            </p>
+                            <a href="" class="main-btn main-slide_btn">В каталог</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-slide">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 order-md-2">
+                            <div class="main-slide_title tablet-small_visible">
+                                Кондиционеры <br> в Воронеже
+                            </div>
+                            <div class="main-slide_img">
+                                <img data-src="img/static/main-slider/01.png" alt="alt">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="main-slide_title tablet-small_hidden">
+                                Кондиционеры <br> в Воронеже
+                            </div>
+                            <p>
+                                Мы предлагаем широкий выбор кондиционеров и сплит-систем
+                                на любой вкус и достаток, а также качественную установку
+                                и сервисное обслуживание
+                            </p>
+                            <a href="" class="main-btn main-slide_btn">В каталог</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main-section -->
+
+    <div class="advantages-section">
+        <div class="container">
+            <ul class="advantages-list">
+                <li class="advantages-item">
+                    <span class="advantages-item_icon glipf-file"></span>
+                    Гарантия от <br>производителя
+                </li>
+                <li class="advantages-item">
+                    <span class="advantages-item_icon glipf-delivery"></span>
+                    Быстрая <br> доставка
+                </li>
+                <li class="advantages-item">
+                    <span class="advantages-item_icon glipf-target"></span>
+                    Более 500 <br>клиентов
+                </li>
+                <li class="advantages-item">
+                    <span class="advantages-item_icon glipf-money"></span>
+                    Хорошие <br>цены
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- end advantages-section -->
+
+    <div class="container">
+        <?$APPLICATION->IncludeComponent(
+            "bitrix:catalog.section.list",
+            "main",
+            Array(
+                "ADD_SECTIONS_CHAIN" => "N",
+                "CACHE_FILTER" => "N",
+                "CACHE_GROUPS" => "Y",
+                "CACHE_TIME" => "36000000",
+                "CACHE_TYPE" => "A",
+                "COUNT_ELEMENTS" => "N",
+                "FILTER_NAME" => "sectionsFilter",
+                "IBLOCK_ID" => "2",
+                "IBLOCK_TYPE" => "catalog",
+                "SECTION_CODE" => "",
+                "SECTION_FIELDS" => array(0=>"",1=>"",),
+                "SECTION_ID" => "",
+                "SECTION_URL" => "",
+                "SECTION_USER_FIELDS" => array(0=>"",1=>"",),
+                "SHOW_PARENT_NAME" => "Y",
+                "TOP_DEPTH" => "1",
+                "VIEW_MODE" => "LINE"
+            )
+        );?>
+        <!-- end category-section -->
+
+        <div class="product-section">
+            <div class="section-title">Популярные товары</div>
+            <div class="row product-slider">
+                <div class="col-xl-3">
+                    <div class="product-item">
+                        <div class="product-item_img">
+                            <div class="product-item_sale">
+                                <span class="glipf-games"></span>-20%
+                            </div>
+                            <a href=""><img data-src="img/static/product/01.jpg" alt="alt"></a>
+                        </div>
+                        <span class="product-item_category">Настенный кондиционер</span>
+                        <div class="product-item_title">
+                            <a href="">Kentatsu KSGN105HFAN1/ KSRN105HFAN1</a>
+                        </div>
+                        <span class="product-item_price">25 290 руб</span>
+                        <div class="product-item_hidden">
+                            <ul class="product-item_features">
+                                <li>
+                                    <span class="glipf-conditioner"></span>
+                                    <span class="gray-color">Тип</span> - сплит-система
+                                </li>
+                                <li>
+                                    <span class="glipf-swing"></span>
+                                    <span class="gray-color">Площадь</span> - 100 м2
+                                </li>
+                                <li>
+                                    <span class="glipf-compressor"></span>
+                                    <span class="gray-color">Компрессор</span> - обычный
+                                </li>
+                                <li>
+                                    <span class="glipf-cold"></span>
+                                    <span class="gray-color">Охлаждение</span> - 3,12 кВт
+                                </li>
+                            </ul>
+                            <a href="" class="product-item_buy-btn main-btn">Купить</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="product-item">
+                        <div class="product-item_img">
+                            <div class="product-item_top">
+                                <span class="glipf-top"></span>тор
+                            </div>
+                            <a href=""><img data-src="img/static/product/01.jpg" alt="alt"></a>
+                        </div>
+                        <span class="product-item_category">Настенный кондиционер</span>
+                        <div class="product-item_title">
+                            <a href="">Ballu BSAG-09HN1_17Y</a>
+                        </div>
+                        <span class="product-item_price">25 290 руб</span>
+                        <div class="product-item_hidden">
+                            <ul class="product-item_features">
+                                <li>
+                                    <span class="glipf-conditioner"></span>
+                                    <span class="gray-color">Тип</span> - сплит-система
+                                </li>
+                                <li>
+                                    <span class="glipf-swing"></span>
+                                    <span class="gray-color">Площадь</span> - 100 м2
+                                </li>
+                                <li>
+                                    <span class="glipf-compressor"></span>
+                                    <span class="gray-color">Компрессор</span> - обычный
+                                </li>
+                                <li>
+                                    <span class="glipf-cold"></span>
+                                    <span class="gray-color">Охлаждение</span> - 3,12 кВт
+                                </li>
+                            </ul>
+                            <a href="" class="product-item_buy-btn main-btn">Купить</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="product-item">
+                        <div class="product-item_img">
+                            <div class="product-item_sale">
+                                <span class="glipf-games"></span>-20%
+                            </div>
+                            <a href=""><img data-src="img/static/product/01.jpg" alt="alt"></a>
+                        </div>
+                        <span class="product-item_category">Настенный кондиционер</span>
+                        <div class="product-item_title">
+                            <a href="">Electrolux EACS/I - 07 HM/N3_15Y</a>
+                        </div>
+                        <span class="product-item_price">25 290 руб</span>
+                        <div class="product-item_hidden">
+                            <ul class="product-item_features">
+                                <li>
+                                    <span class="glipf-conditioner"></span>
+                                    <span class="gray-color">Тип</span> - сплит-система
+                                </li>
+                                <li>
+                                    <span class="glipf-swing"></span>
+                                    <span class="gray-color">Площадь</span> - 100 м2
+                                </li>
+                                <li>
+                                    <span class="glipf-compressor"></span>
+                                    <span class="gray-color">Компрессор</span> - обычный
+                                </li>
+                                <li>
+                                    <span class="glipf-cold"></span>
+                                    <span class="gray-color">Охлаждение</span> - 3,12 кВт
+                                </li>
+                            </ul>
+                            <a href="" class="product-item_buy-btn main-btn">Купить</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="product-item">
+                        <div class="product-item_img">
+                            <div class="product-item_new">
+                                <span class="glipf-new"></span>
+                            </div>
+                            <a href=""><img data-src="img/static/product/01.jpg" alt="alt"></a>
+                        </div>
+                        <span class="product-item_category">Настенный кондиционер</span>
+                        <div class="product-item_title">
+                            <a href="">Royal Clima RCI-T30HN</a>
+                        </div>
+                        <span class="product-item_price">25 290 руб</span>
+                        <div class="product-item_hidden">
+                            <ul class="product-item_features">
+                                <li>
+                                    <span class="glipf-conditioner"></span>
+                                    <span class="gray-color">Тип</span> - сплит-система
+                                </li>
+                                <li>
+                                    <span class="glipf-swing"></span>
+                                    <span class="gray-color">Площадь</span> - 100 м2
+                                </li>
+                                <li>
+                                    <span class="glipf-compressor"></span>
+                                    <span class="gray-color">Компрессор</span> - обычный
+                                </li>
+                                <li>
+                                    <span class="glipf-cold"></span>
+                                    <span class="gray-color">Охлаждение</span> - 3,12 кВт
+                                </li>
+                            </ul>
+                            <a href="" class="product-item_buy-btn main-btn">Купить</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="" class="all-product_btn main-btn">Все товары</a>
+            </div>
+        </div>
+        <!-- end product-section -->
+        <div class="banner">
+            <div class="banner-title">
+                Подготовтесь к лету <br>уже сейчас!
+            </div>
+            <a href="" class="banner-btn">Подробнее</a>
+        </div>
+        <!-- end banner -->
+        <div class="services-section">
+            <div class="section-title">Наши услуги</div>
+            <div class="row services-slider">
+                <div class="col-md-4">
+                    <div class="services-item">
+                        <span class="services-item_icon glipf-air"></span>
+                        <div class="services-item_title">Установка сплит-системы</div>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                        </p>
+                        <a href="" class="services-item_more-details">
+                            <span class="text">Подробнее</span> <span class="arrow">&#8594;</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="services-item">
+                        <span class="services-item_icon glipf-tools"></span>
+                        <div class="services-item_title">Обслуживание сплит-систем</div>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                        </p>
+                        <a href="" class="services-item_more-details">
+                            <span class="text">Подробнее</span> <span class="arrow">&#8594;</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="services-item">
+                        <span class="services-item_icon glipf-drill"></span>
+                        <div class="services-item_title">Алмазное бурение</div>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                        </p>
+                        <a href="" class="services-item_more-details">
+                            <span class="text">Подробнее</span> <span class="arrow">&#8594;</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end services-section -->
+        <div class="news-section">
+            <div class="section-title">Наши новости</div>
+            <div class="row news-slider">
+                <div class="col-xl-3">
+                    <div class="news-item">
+                        <div class="news-item_img">
+                            <a href=""><img data-src="img/static/news/01.jpg" alt="alt"></a>
+                        </div>
+                        <div class="news-item-desc">
+                            <span class="news-item_date">25.10.2019</span>
+                            <div class="news-item_title">
+                                поздравляем с днём климатехника!
+                            </div>
+                            <a href="" class="news-item_more-details">
+                                <span class="text">Подробнее</span> <span class="arrow">&#8594;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="news-item">
+                        <div class="news-item_img">
+                            <a href=""><img data-src="img/static/news/02.jpg" alt="alt"></a>
+                        </div>
+                        <div class="news-item-desc">
+                            <span class="news-item_date">25.10.2019</span>
+                            <div class="news-item_title">
+                                поздравляем с днём климатехника!
+                            </div>
+                            <a href="" class="news-item_more-details">
+                                <span class="text">Подробнее</span> <span class="arrow">&#8594;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="news-item">
+                        <div class="news-item_img">
+                            <a href=""><img data-src="img/static/news/03.jpg" alt="alt"></a>
+                        </div>
+                        <div class="news-item-desc">
+                            <span class="news-item_date">25.10.2019</span>
+                            <div class="news-item_title">
+                                поздравляем с днём климатехника!
+                            </div>
+                            <a href="" class="news-item_more-details">
+                                <span class="text">Подробнее</span> <span class="arrow">&#8594;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3">
+                    <div class="news-item">
+                        <div class="news-item_img">
+                            <a href=""><img data-src="img/static/news/04.jpg" alt="alt"></a>
+                        </div>
+                        <div class="news-item-desc">
+                            <span class="news-item_date">25.10.2019</span>
+                            <div class="news-item_title">
+                                поздравляем с днём климатехника!
+                            </div>
+                            <a href="" class="news-item_more-details">
+                                <span class="text">Подробнее</span> <span class="arrow">&#8594;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="" class="all-news_btn main-btn">Все новости</a>
+            </div>
+        </div>
+        <!-- end news-section -->
+        <div class="brands-section">
+            <div class="section-title">Бренды</div>
+            <div class="brands-slider">
+                <div class="brand-item">
+                    <a href=""><img data-src="img/static/brands/01.jpg" alt="alt"></a>
+                </div>
+                <div class="brand-item">
+                    <a href=""><img data-src="img/static/brands/02.jpg" alt="alt"></a>
+                </div>
+                <div class="brand-item">
+                    <a href=""><img data-src="img/static/brands/03.jpg" alt="alt"></a>
+                </div>
+                <div class="brand-item">
+                    <a href=""><img data-src="img/static/brands/04.jpg" alt="alt"></a>
+                </div>
+                <div class="brand-item">
+                    <a href=""><img data-src="img/static/brands/02.jpg" alt="alt"></a>
+                </div>
+            </div>
+        </div>
+        <!-- end brands-section -->
+    </div>
+    <div class="contact-section">
+        <div class="container-fluid">
+            <div class="row no-gutters  align-items-center">
+                <div class="col-md-6">
+                    <div class="contact-section_desc">
+                        <div class="section-title">Наши контакты</div>
+                        <ul class="contact-list">
+                            <li>
+                                <span class="glipf-placeholder"></span>
+                                г. Воронеж, Монтажный проезд, д. 26
+                            </li>
+                            <li>
+                                <span class="glipf-phone"></span>
+                                <a href="tel:88007771977">8 (800) 777-19-77</a>
+                            </li>
+                            <li>
+                                <a href="mailto:online@rusklimat.ru">
+                                    <span class="glipf-email"></span>
+                                    online@rusklimat.ru</a>
+                            </li>
+                        </ul>
+                        <a href="#callback" data-toggle="modal" class="callback-btn main-btn">Заказать звонок</a>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="map-container">
+                        <div id="map"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end contact-section -->
+</main>
+<!-- end main-content -->
+
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
