@@ -15,11 +15,13 @@ $this->setFrameMode(true);
 
 <article class="news-detailed_section">
     <div class="container">
+
         <ul class="breadcrumbs">
             <li><a href="">Главная</a></li>
             <li><a href="">Новости</a></li>
             <li>Поздравляем с днем климатехника!</li>
         </ul>
+
         <?$ElementID = $APPLICATION->IncludeComponent(
             "bitrix:news.detail",
             "",
@@ -76,171 +78,6 @@ $this->setFrameMode(true);
             ),
             $component
         );?>
-        <div class="news-detailed_services">
-            <div class="news-detailed_services-header">Цена на услугу</div>
-            <div class="news-detailed_services-item">
-                <div class="news-detailed_services-item_header">Трасса межблочная</div>
-                <div class="news-detailed_services-item_body">
-                    <table class="news-detailed_services-item_table">
-                        <tr>
-                            <td>Монтаж короба 60х60, м (с материалом)</td>
-                            <td>390 руб.</td>
-                        </tr>
-                        <tr>
-                            <td>Монтаж короба 60х60, м (с материалом)</td>
-                            <td>490 руб.</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="news-detailed_services-item is-active">
-                <div class="news-detailed_services-item_header">Монтаж короба</div>
-                <div class="news-detailed_services-item_body">
-                    <table class="news-detailed_services-item_table">
-                        <tr>
-                            <td>Монтаж короба 60х60, м (с материалом)</td>
-                            <td>390 руб.</td>
-                        </tr>
-                        <tr>
-                            <td>Монтаж короба 60х60, м (с материалом)</td>
-                            <td>490 руб.</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="news-detailed_services-item">
-                <div class="news-detailed_services-item_header">Штробление стен</div>
-                <div class="news-detailed_services-item_body">
-                    <table class="news-detailed_services-item_table">
-                        <tr>
-                            <td>Монтаж короба 60х60, м (с материалом)</td>
-                            <td>390 руб.</td>
-                        </tr>
-                        <tr>
-                            <td>Монтаж короба 60х60, м (с материалом)</td>
-                            <td>490 руб.</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="news-detailed_services-item">
-                <div class="news-detailed_services-item_header">Высотные работы</div>
-                <div class="news-detailed_services-item_body">
-                    <table class="news-detailed_services-item_table">
-                        <tr>
-                            <td>Монтаж короба 60х60, м (с материалом)</td>
-                            <td>390 руб.</td>
-                        </tr>
-                        <tr>
-                            <td>Монтаж короба 60х60, м (с материалом)</td>
-                            <td>490 руб.</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <!-- end news-detailed_services -->
-        <div class="news-detailed_additional-information">
-            <div class="title">Дополнительная информация</div>
-            <div class="wrapper-table">
-                <table class="news-detailed_additional-information_table">
-                    <tr>
-                        <td><strong>Холодильная мощность, кВт</strong></td>
-                        <td>1.5</td>
-                        <td>2</td>
-                        <td>2.5</td>
-                        <td>3.5</td>
-                        <td>5.5</td>
-                        <td>7</td>
-                        <td>10</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <strong>Стандартные типоразмеры модели</strong>
-                        </td>
-                        <td>05</td>
-                        <td>07</td>
-                        <td>09</td>
-                        <td>12</td>
-                        <td>18</td>
-                        <td>24</td>
-                        <td>36</td>
-                    </tr>
-                    <tr>
-                        <td>Оконные кондиционеры</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>Настенные кондиционеры</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>Канальные кондиционеры</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>Колонные кондиционеры</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>Напольно-потолочные кондиционеры</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>+</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <!-- end news-detailed_additional-information -->
-        <div class="h3">Информация</div>
-        <div class="news-detailed_subtitle">Условия оказания услуги</div>
-        <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. <br>
-            Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. <br>
-            Aenean vulputate eleifend tellus.
-        </p>
-        <p>
-            Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.
-        </p>
-        <div class="news-detailed_subtitle">Условия оказания услуги</div>
-        <p>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.
-        </p>
-        <div class="news-detailed_footer">
-            <span class="news-detailed_date">25.01.2019</span>
-            <span class="news-detailed_view">
-								<span class="glipf-view"></span>315
-							</span>
-            <span class="news-detailed_share glipf-share"></span>
-        </div>
     </div>
 </article>
 <!-- end news-mod_section -->

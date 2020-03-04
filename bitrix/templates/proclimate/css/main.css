@@ -393,7 +393,7 @@ h4, .h4 {
   font-style: normal;
 }
 
-[class^="glipf-"], [class*=" glipf-"] {
+[class^="glipf-"], [class*=" glipf-"], .ya-share2__icon_more {
   font-family: 'glipf-icon' !important;
   speak: none;
   font-style: normal;
@@ -522,8 +522,9 @@ h4, .h4 {
   content: "\e91c";
 }
 
-.glipf-share:before {
-  content: "\e91d";
+.glipf-share:before,
+.ya-share2__icon_more:before {
+  content: "\e91d"!important;
 }
 
 .glipf-speaker:before {

@@ -11,22 +11,29 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
+
+$currentLen = $_REQUEST['len'];
+$arLen = [15, 30, 45];
 ?>
 <div class="news-mod_section">
     <div class="container">
+
         <ul class="breadcrumbs">
             <li><a href="">Главная</a></li>
             <li>Новости</li>
         </ul>
+
         <h1>Новости</h1>
         <div class="unified-sorter-pahel">
             <div class="unified_show-by_box">
                 <span class="text">Показывать по:</span>
-                <select class="js-select">
-                    <option value="">15</option>
-                    <option value="">30</option>
-                    <option value="">45</option>
-                </select>
+                <form action="" onchange="this.submit()">
+                    <select class="js-select" name="len">
+                        <? foreach ($arLen as $len):?>
+                            <option value="<?=$len?>" <?=($len == $currentLen) ? 'selected' : null; ?>><?=$len?></option>
+                        <? endforeach; ?>
+                    </select>
+                </form>
             </div>
             <ul class="view-mode_list">
                 <li class="view-mode_list-item  news_view-mode_table is-active">
@@ -44,7 +51,7 @@ $this->setFrameMode(true);
             Array(
                 "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
                 "IBLOCK_ID" => $arParams["IBLOCK_ID"],
-                "NEWS_COUNT" => $arParams["NEWS_COUNT"],
+                "NEWS_COUNT" => ($currentLen) ?: $arParams["NEWS_COUNT"],
                 "SORT_BY1" => $arParams["SORT_BY1"],
                 "SORT_ORDER1" => $arParams["SORT_ORDER1"],
                 "SORT_BY2" => $arParams["SORT_BY2"],
