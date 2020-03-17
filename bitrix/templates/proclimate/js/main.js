@@ -141,26 +141,8 @@ jQuery(document).ready(function($) {
       var msg = $(this).val();
     });
   });
-  $('.wrapper-counter-btn').each(function() {
-    $(this).find('.counter-back').on("click", function(e) {
-      var valPlus = $(this).siblings('.product-count').val();
-      var result = parseInt(valPlus) - 1;
-      if (result >= 0) {
-        $(this).siblings('.product-count').val(result);
-      }
-      return false;
-    });
-  });
-  $('.wrapper-counter-btn').each(function() {
-    $(this).find('.counter-forward').on("click", function(e) {
-      var valPlus = $(this).siblings('.product-count').val();
-      var result = parseInt(valPlus) + 1;
-      if (result >= 0) {
-        $(this).siblings('.product-count').val(result);
-      }
-      return false;
-    });
-  });
+
+
 
   $('.js-select').selectric({
     maxHeight: 200,
@@ -168,10 +150,14 @@ jQuery(document).ready(function($) {
     nativeOnMobile: false,
   });
 
+
+  var minPrice = parseFloat(filterPrice.minPrice);
+  var maxPrice = parseFloat(filterPrice.maxPrice);
+
   /***UI-SLIDER*/
   $("#price-min").on('input', function() {
-    var min = 0
-    var max = 3000
+    var min = minPrice
+    var max = maxPrice
     var value1 = $("#price-min").val();
     var value2 = $("#price-max").val();
     if (parseInt(value1) > parseInt(value2)) {
@@ -187,9 +173,10 @@ jQuery(document).ready(function($) {
     if (Number($("#price-min").val()) < min) $(this).val(min);
     $("#slider-range").slider("values", 0, value1);
   });
+
   $("#price-max").on('input', function() {
-    var min = 0
-    var max = 3000
+    var min = minPrice
+    var max = maxPrice
     var value1 = $("#price-min").val();
     var value2 = $("#price-max").val();
     if (parseInt(value1) > parseInt(value2)) {
@@ -205,17 +192,23 @@ jQuery(document).ready(function($) {
     if (Number($("#price-max").val()) < min) $(this).val(min);
     $("#slider-range").slider("values", 1, value2);
   });
+
   $("#slider-range").slider({
     animate: true,
     range: true,
-    min: 0,
-    max: 3000,
-    values: [0, 3000],
+    min: minPrice,
+    max: maxPrice,
+    values: [minPrice, maxPrice],
     slide: function(event, ui) {
       $("#price-min").val(ui.values[0]);
       $("#price-max").val(ui.values[1]);
+    },
+    stop: function( event, ui ) {
+      $("#price-min").trigger('keyup');
     }
   });
+
+
   $("#price-min2").on('input', function() {
     var min = 0
     var max = 4
@@ -671,7 +664,7 @@ jQuery(document).ready(function($) {
                 image.addEventListener( "load", function() {
                     youtube[ i ].appendChild( image );
                 }( i ) );
-        
+
                 youtube[i].addEventListener( "click", function() {
                     var iframe = document.createElement( "iframe" );
                     iframe.setAttribute( "frameborder", "0" );
@@ -679,7 +672,7 @@ jQuery(document).ready(function($) {
                     iframe.setAttribute( "src", "https://www.youtube.com/embed/"+ this.dataset.embed +"?rel=0&showinfo=0&autoplay=1" );
                     this.innerHTML = "";
                     this.appendChild( iframe );
-                } );    
+                } );
     };
 } )();
 
@@ -740,6 +733,18 @@ jQuery(document).ready(function($) {
     "clearIncomplete": true,
     showMaskOnHover: false,
   });
+
+  $('.main-btn').click(function () {
+      if($(this).data('id')){
+        $.get("/ajax/add.php", { id : $(this).data('id') }).done(function(data) {
+          alertify.success(data);
+        });
+
+        return false;
+      }
+  });
+
+
 });
 if ($('.map-container').length) {
   YaMapsShown = false;

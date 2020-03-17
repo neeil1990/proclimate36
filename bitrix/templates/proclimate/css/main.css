@@ -2755,8 +2755,18 @@ h4, .h4 {
   padding: 1.5em 1em;
 }
 
+
 .sidebar-filter_block {
   margin-bottom: 1.4em;
+}
+
+.sidebar-filter_block .bx-filter-popup-result{
+  text-align: center;
+  background-color: #e4eef3;
+  border: 1px solid #17769b;
+  color: #17769b;
+  border-radius: 16px;
+  margin: 5px auto;
 }
 
 .sidebar-filter_block.is-hidden .sidebar-filter_block-title:after {
@@ -2778,6 +2788,8 @@ h4, .h4 {
   cursor: pointer;
   color: #2b2b28;
 }
+
+
 
 .sidebar-filter_block-title.is-active:after {
   -webkit-transform: rotate(-135deg);

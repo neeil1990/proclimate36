@@ -10,6 +10,7 @@
     <link href="<?=SITE_DIR?>img/apple-touch-icon.png" rel="apple-touch-icon" />
     <? $APPLICATION->ShowHead(); ?>
     <style>body{opacity: 0;}</style>
+    <script>var filterPrice = {};</script>
 </head>
 <body>
 <div id="panel"><? $APPLICATION->ShowPanel(); ?></div>
