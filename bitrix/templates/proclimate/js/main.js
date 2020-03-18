@@ -734,9 +734,14 @@ jQuery(document).ready(function($) {
     showMaskOnHover: false,
   });
 
+  //add to cart product
   $('.main-btn').click(function () {
       if($(this).data('id')){
         $.get("/ajax/add.php", { id : $(this).data('id') }).done(function(data) {
+          $.get("/ajax/basket.small.php").done(function (cart) {
+            $('#small_cart').html(cart);
+            lazyLoad($('#small_cart'));
+          });
           alertify.success(data);
         });
 
