@@ -15,10 +15,11 @@ $this->setFrameMode(true);
 
 <div class="services-mod_section">
     <div class="container">
-        <ul class="breadcrumbs">
-            <li><a href="">Главная</a></li>
-            <li>Услуги</li>
-        </ul>
+        <?
+        $APPLICATION->IncludeComponent("bitrix:breadcrumb", "breadcrumb", Array("SITE_ID" => SITE_ID),
+            false
+        );
+        ?>
         <h1>Услуги</h1>
         <?$APPLICATION->IncludeComponent(
             "bitrix:news.list",

@@ -15,10 +15,11 @@ $this->setFrameMode(true);
 ?>
 <div class="category-section_mod">
     <div class="container">
-        <ul class="breadcrumbs">
-            <li><a href="">Главная</a></li>
-            <li>Каталог товаров</li>
-        </ul>
+        <?
+        $APPLICATION->IncludeComponent("bitrix:breadcrumb", "breadcrumb", Array("SITE_ID" => SITE_ID),
+            false
+        );
+        ?>
 
         <h1>Каталог товаров</h1>
         <?$APPLICATION->IncludeComponent(

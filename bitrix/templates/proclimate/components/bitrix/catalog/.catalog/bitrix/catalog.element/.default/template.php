@@ -16,7 +16,7 @@ $this->setFrameMode(true);
 <div class="row selected-product_content">
     <div class="col-lg-5">
         <div class="selected-product_desc-header  tablet-visible">
-            <span class="selected-product_desc-type">Настенный кондиционер</span>
+            <span class="selected-product_desc-type"><?=$arResult['SECTION']['NAME']?></span>
             <h1 class="selected-product_title"><?=$arResult['NAME']?></h1>
             <div class="selected-product_bottom-panel">
                 <span class="selected-product_code">Код товара: <?=$arResult['ID']?></span>
@@ -47,11 +47,15 @@ $this->setFrameMode(true);
     <div class="col-lg-7">
         <div class="selected-product_desc">
             <div class="selected-product_desc-header  tablet-hidden">
-                <span class="selected-product_desc-type">Настенный кондиционер</span>
+                <span class="selected-product_desc-type"><?=$arResult['SECTION']['NAME']?></span>
                 <h1 class="selected-product_title"><?=$arResult['NAME']?></h1>
                 <div class="selected-product_bottom-panel">
                     <span class="selected-product_code">Код товара: <?=$arResult['ID']?></span>
-                    <span class="selected-product_brand"><img data-src="img/static/brand-product/01.jpg" alt="alt"></span>
+                    <? if($arResult['PROPERTIES']['BRAND']['VALUE']): ?>
+                    <span class="selected-product_brand">
+                        <img data-src="<?=CFile::GetPath($arResult['PROPERTIES']['BRAND']['VALUE']);?>" alt="<?=$arResult['NAME']?>">
+                    </span>
+                    <? endif; ?>
                 </div>
             </div>
             <div class="row">
@@ -126,15 +130,11 @@ $this->setFrameMode(true);
     <ul class="selected-product_tab-names">
         <li class="tab active">Описание</li>
         <li class="tab">Характеристики</li>
-        <li class="tab">Отзывы</li>
         <li class="tab">Оплата и доставка</li>
     </ul>
     <div class="selected-product_content-tabs">
         <div class="tab-item is-visible"><?=$arResult['DETAIL_TEXT']?></div>
         <div class="tab-item"><?=$arResult['PROPERTIES']['OPTION_TEXT']['~VALUE']['TEXT']?></div>
-        <div class="tab-item">
-            Отзывы
-        </div>
         <div class="tab-item">
             Оплата и доставка
         </div>

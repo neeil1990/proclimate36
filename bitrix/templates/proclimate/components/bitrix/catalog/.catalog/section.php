@@ -32,11 +32,11 @@ $this->setFrameMode(true);
 				</div>
 			</div>
 		</div>
-		<ul class="breadcrumbs">
-			<li><a href="">Главная</a></li>
-			<li><a href="">Каталог</a></li>
-			<li>Каталог товаров</li>
-		</ul>
+        <?
+        $APPLICATION->IncludeComponent("bitrix:breadcrumb", "breadcrumb", Array("SITE_ID" => SITE_ID),
+            false
+        );
+        ?>
 		<h1>Каталог товаров</h1>
 
         <div class="row">
@@ -303,7 +303,7 @@ $this->setFrameMode(true);
                         'MESS_NOT_AVAILABLE' => $arParams['MESS_NOT_AVAILABLE'],
 
                         'TEMPLATE_THEME' => (isset($arParams['TEMPLATE_THEME']) ? $arParams['TEMPLATE_THEME'] : ''),
-                        "ADD_SECTIONS_CHAIN" => "N",
+                        "ADD_SECTIONS_CHAIN" => "Y",
                         'ADD_TO_BASKET_ACTION' => $basketAction,
                         'SHOW_CLOSE_POPUP' => isset($arParams['COMMON_SHOW_CLOSE_POPUP']) ? $arParams['COMMON_SHOW_CLOSE_POPUP'] : '',
                         'COMPARE_PATH' => $arResult['FOLDER'].$arResult['URL_TEMPLATES']['compare']

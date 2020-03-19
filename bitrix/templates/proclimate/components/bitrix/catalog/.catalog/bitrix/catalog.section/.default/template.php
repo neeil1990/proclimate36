@@ -28,7 +28,9 @@ $this->setFrameMode(true);
                 </div>
                 <div class="product-item_desc">
                     <div class="product_item_desc-top">
-                        <span class="product-item_category">Настенный кондиционер</span>
+                        <span class="product-item_category">
+                            <?=($arItem['~IBLOCK_SECTION_ID']) ? CIBlockSection::GetByID($arItem['~IBLOCK_SECTION_ID'])->GetNext()['NAME'] : '';?>
+                        </span>
                         <div class="product-item_title">
                             <a href="<?=$arItem['DETAIL_PAGE_URL']?>">
                                 <?=$arItem['NAME']?>

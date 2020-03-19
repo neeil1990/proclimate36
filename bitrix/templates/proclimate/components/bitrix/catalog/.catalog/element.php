@@ -27,12 +27,11 @@ else
 <div class="selected-product_section">
     <div class="container">
 
-        <ul class="breadcrumbs">
-            <li><a href="">Главная</a></li>
-            <li><a href="">Каталог</a></li>
-            <li><a href="">Кондиционеры </a></li>
-            <li>Ballu BSAG-09HN1_17Y</li>
-        </ul>
+        <?
+        $APPLICATION->IncludeComponent("bitrix:breadcrumb", "breadcrumb", Array("SITE_ID" => SITE_ID),
+            false
+        );
+        ?>
 
         <?$ElementID = $APPLICATION->IncludeComponent(
             "bitrix:catalog.element",
@@ -139,47 +138,59 @@ else
         );
         ?>
 
-        <div class="relate-products_section">
-            <div class="section-title">Похожие товары</div>
-            <div class="product-unified_slider">
-
-                <div class="product-item">
-                    <div class="product-item_img">
-                        <div class="product-item_new">
-                            <span class="glipf-new"></span>
-                        </div>
-                        <a href=""><img data-src="img/static/product/01.jpg" alt="alt"></a>
-                    </div>
-                    <span class="product-item_category">Настенный кондиционер</span>
-                    <div class="product-item_title">
-                        <a href="">Ballu BSAG-09HN1_17Y</a>
-                    </div>
-                    <span class="product-item_price">25 290 руб</span>
-                    <div class="product-item_hidden">
-                        <ul class="product-item_features">
-                            <li>
-                                <span class="glipf-conditioner"></span>
-                                <span class="gray-color">Тип</span> - сплит-система
-                            </li>
-                            <li>
-                                <span class="glipf-swing"></span>
-                                <span class="gray-color">Площадь</span> - 100 м2
-                            </li>
-                            <li>
-                                <span class="glipf-compressor"></span>
-                                <span class="gray-color">Компрессор</span> - обычный
-                            </li>
-                            <li>
-                                <span class="glipf-cold"></span>
-                                <span class="gray-color">Охлаждение</span> - 3,12 кВт
-                            </li>
-                        </ul>
-                        <a href="" class="product-item_buy-btn main-btn">Купить</a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+        <?$APPLICATION->IncludeComponent(
+	"bitrix:catalog.recommended.products",
+	"recommended.products",
+	array(
+		"ACTION_VARIABLE" => "action_crp",
+		"ADDITIONAL_PICT_PROP_2" => "BRAND",
+		"ADD_PROPERTIES_TO_BASKET" => "Y",
+		"BASKET_URL" => "/personal/basket.php",
+		"CACHE_TIME" => "86400",
+		"CACHE_TYPE" => "A",
+		"CODE" => "",
+		"CONVERT_CURRENCY" => "N",
+		"DETAIL_URL" => "",
+		"ELEMENT_SORT_FIELD" => "SORT",
+		"ELEMENT_SORT_FIELD2" => "ID",
+		"ELEMENT_SORT_ORDER" => "ASC",
+		"ELEMENT_SORT_ORDER2" => "DESC",
+		"HIDE_NOT_AVAILABLE" => "N",
+		"LIST_PROPERTY_CODE" => $arParams["LIST_PROPERTY_CODE"],
+		"IBLOCK_ID" => $arParams["IBLOCK_ID"],
+		"IBLOCK_TYPE" => "catalog",
+		"ID" => $ElementID,
+		"LABEL_PROP_2" => "-",
+		"LINE_ELEMENT_COUNT" => "3",
+		"MESS_BTN_BUY" => "Купить",
+		"MESS_BTN_DETAIL" => "Подробнее",
+		"MESS_BTN_SUBSCRIBE" => "Подписаться",
+		"MESS_NOT_AVAILABLE" => "Нет в наличии",
+		"OFFERS_PROPERTY_LINK" => "RECOMMEND",
+		"PAGE_ELEMENT_COUNT" => "30",
+		"PARTIAL_PRODUCT_PROPERTIES" => "Y",
+		"PRICE_CODE" => array(
+			0 => "BASE",
+		),
+		"PRICE_VAT_INCLUDE" => "Y",
+		"PRODUCT_DISPLAY_MODE" => "N",
+		"PRODUCT_ID_VARIABLE" => "id",
+		"PRODUCT_PROPS_VARIABLE" => "prop",
+		"PRODUCT_QUANTITY_VARIABLE" => "quantity",
+		"PRODUCT_SUBSCRIPTION" => "N",
+		"PROPERTY_LINK" => "RECOMMEND",
+		"SHOW_DISCOUNT_PERCENT" => "N",
+		"SHOW_IMAGE" => "Y",
+		"SHOW_NAME" => "Y",
+		"SHOW_OLD_PRICE" => "N",
+		"SHOW_PRICE_COUNT" => "1",
+		"SHOW_PRODUCTS_2" => "N",
+		"TEMPLATE_THEME" => "blue",
+		"USE_PRODUCT_QUANTITY" => "N",
+		"COMPONENT_TEMPLATE" => "recommended.products"
+	),
+	false
+);?>
 
     </div>
 </div>

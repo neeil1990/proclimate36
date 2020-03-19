@@ -18,10 +18,11 @@ $arLen = [15, 30, 45];
 <div class="news-mod_section">
     <div class="container">
 
-        <ul class="breadcrumbs">
-            <li><a href="">Главная</a></li>
-            <li>Новости</li>
-        </ul>
+        <?
+        $APPLICATION->IncludeComponent("bitrix:breadcrumb", "breadcrumb", Array("SITE_ID" => SITE_ID),
+            false
+        );
+        ?>
 
         <h1>Новости</h1>
         <div class="unified-sorter-pahel">

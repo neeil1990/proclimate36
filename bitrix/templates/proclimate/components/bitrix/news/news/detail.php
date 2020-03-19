@@ -16,11 +16,11 @@ $this->setFrameMode(true);
 <article class="news-detailed_section">
     <div class="container">
 
-        <ul class="breadcrumbs">
-            <li><a href="">Главная</a></li>
-            <li><a href="">Новости</a></li>
-            <li>Поздравляем с днем климатехника!</li>
-        </ul>
+        <?
+        $APPLICATION->IncludeComponent("bitrix:breadcrumb", "breadcrumb", Array("SITE_ID" => SITE_ID),
+            false
+        );
+        ?>
 
         <?$ElementID = $APPLICATION->IncludeComponent(
             "bitrix:news.detail",
