@@ -1,36 +1,36 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 $aMenuLinks = Array(
 	Array(
-		"Как купить", 
-		"about/howto/", 
-		Array(), 
-		Array(), 
-		"" 
+		"Услуги",
+		"services/",
+		Array(),
+		Array(),
+		""
 	),
 	Array(
-		"Доставка", 
-		"about/delivery/", 
-		Array(), 
-		Array(), 
-		"" 
+		"Акции",
+		"action/",
+		Array(),
+		Array(),
+		""
 	),
 	Array(
-		"О магазине", 
-		"about/", 
-		Array(), 
-		Array(), 
-		"" 
-	),	
-	Array(
-		"Гарантия", 
-		"about/guaranty/", 
-		Array(), 
-		Array(), 
-		"" 
+		"Наши работы",
+		"works/",
+		Array(),
+		Array(),
+		""
 	),
 	Array(
-		"Контакты",
-		"about/contacts/",
+		"Оплата и доставка",
+		"payment/",
+		Array(),
+		Array(),
+		""
+	),
+	Array(
+		"О компании",
+		"about/",
 		Array(),
 		Array(),
 		""

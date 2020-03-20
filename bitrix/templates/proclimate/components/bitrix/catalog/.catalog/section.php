@@ -14,29 +14,31 @@ use Bitrix\Main\Loader;
 use Bitrix\Main\ModuleManager;
 
 $this->setFrameMode(true);
+$currentLen = $_REQUEST['len'];
+$arLen = [15, 30, 45];
+$arSort = ['shows' => 'Популярности','SCALED_PRICE_1' => 'Цене', 'name' => 'Название'];
 ?>
 
 <div class="catalog-section">
 	<div class="container">
-		<div class="banner-second">
-			<div class="left-column">
-				<div class="banner-title">
-					Скидка на кондиционеры <br>модели Kentatsu
-				</div>
-				<a href="" class="banner-btn">Подробнее</a>
-			</div>
-			<div class="right-column">
-				<div class="banner-text">
-					Скидки
-					<span class="red-color">до 30 %</span>
-				</div>
-			</div>
-		</div>
+
+        <?$APPLICATION->IncludeComponent(
+            "bitrix:main.include",
+            "",
+            Array(
+                "AREA_FILE_SHOW" => "file",
+                "AREA_FILE_SUFFIX" => "inc",
+                "EDIT_TEMPLATE" => "",
+                "PATH" => "/include/banner-second.php"
+            )
+        );?>
+
         <?
         $APPLICATION->IncludeComponent("bitrix:breadcrumb", "breadcrumb", Array("SITE_ID" => SITE_ID),
             false
         );
         ?>
+
 		<h1>Каталог товаров</h1>
 
         <div class="row">
@@ -68,7 +70,7 @@ $this->setFrameMode(true);
                         $arCurSection = array();
                         if (Loader::includeModule("iblock"))
                         {
-                            $dbRes = CIBlockSection::GetList(array(), $arFilter, false, array("ID", "DESCRIPTION"));
+                            $dbRes = CIBlockSection::GetList(array(), $arFilter, false, array("ID", "DESCRIPTION", "UF_FILTER"));
 
                             if(defined("BX_COMP_MANAGED_CACHE"))
                             {
@@ -129,74 +131,53 @@ $this->setFrameMode(true);
             <div class="col-xl-9 col-lg-8 col-md-8">
 
                 <div class="catalog-top_box">
+                    <? if($arCurSection['UF_FILTER']): ?>
 					<div class="wrapper_filter-panel_item">
-						<div class="filter-panel_item is-active">
-							<div class="filter-panel_item-title">Мощность при охлаждении</div>
-							<ul class="filter-panel_parameters-list">
-								<li>1 кВт</li>
-								<li>2 кВт</li>
-								<li>3 кВт</li>
-								<li>4 кВт</li>
-								<li>5 кВт</li>
-								<li>6 кВт</li>
-								<li>7 кВт</li>
-								<li>8 кВт</li>
-								<li class="hidden_filter-paremeter_btn">
-									<span class="text">Скрыть</span>
-								</li>
-							</ul>
-						</div>
-						<div class="filter-panel_item">
-							<div class="filter-panel_item-title">Мощность при обогреве</div>
-							<ul class="filter-panel_parameters-list">
-								<li>1 кВт</li>
-								<li>2 кВт</li>
-								<li>3 кВт</li>
-								<li>4 кВт</li>
-								<li>5 кВт</li>
-								<li>6 кВт</li>
-								<li>7 кВт</li>
-								<li>8 кВт</li>
-								<li class="hidden_filter-paremeter_btn">
-									<span class="text">Скрыть</span>
-								</li>
-							</ul>
-						</div>
-						<div class="filter-panel_item">
-							<div class="filter-panel_item-title">Максимальная площадь помещения</div>
-							<ul class="filter-panel_parameters-list">
-								<li>1 кВт</li>
-								<li>2 кВт</li>
-								<li>3 кВт</li>
-								<li>4 кВт</li>
-								<li>5 кВт</li>
-								<li>6 кВт</li>
-								<li>7 кВт</li>
-								<li>8 кВт</li>
-								<li class="hidden_filter-paremeter_btn">
-									<span class="text">Скрыть</span>
-								</li>
-							</ul>
-						</div>
+                        <?
+                        $arSelect = Array("ID", "IBLOCK_ID", "NAME", "DATE_ACTIVE_FROM","PROPERTY_*");
+                        $arFilter = Array("IBLOCK_ID" => $arParams['UF_FILTER_IBLOCK_ID'], "ID" => $arCurSection['UF_FILTER'], "ACTIVE"=>"Y");
+                        $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+                        while($ob = $res->GetNextElement()){
+                            $arProps = $ob->GetProperties();
+                            ?>
+                            <div class="filter-panel_item">
+                                <div class="filter-panel_item-title"><?=$arProps['NAME']['VALUE']?></div>
+                                <ul class="filter-panel_parameters-list">
+                                    <? foreach ($arProps['PROP']['VALUE'] as $desc => $val):?>
+                                        <li>
+                                            <a href="<?=$val?>"><?=$arProps['PROP']['DESCRIPTION'][$desc]?></a>
+                                        </li>
+                                    <? endforeach; ?>
+                                    <li class="hidden_filter-paremeter_btn">
+                                        <span class="text">Скрыть</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        <? } ?>
 					</div>
+                    <? endif; ?>
 					<div class="catalog-filter_panel">
 						<div class="row">
 							<div class="col-sm-6 left-column">
 								<span class="text">Сортировать по:</span>
-								<select class="js-select">
-									<option value="">Популярности</option>
-									<option value="">Цене</option>
-									<option value="">От дешевых</option>
-								</select>
+                                <form action="" onchange="this.submit()">
+                                    <select class="js-select" name="SORT">
+                                        <? foreach ($arSort as $sort => $text):?>
+                                        <option value="<?=$sort?>" <?=($sort == $_REQUEST['SORT']) ? 'selected' : null; ?>><?=$text?></option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </form>
 							</div>
 							<div class="col-sm-6 right-column">
 								<div class="catalog-filter_show-by">
 									<span class="text">Показывать по:</span>
-									<select class="js-select">
-										<option value="">15</option>
-										<option value="">30</option>
-										<option value="">45</option>
-									</select>
+                                    <form action="" onchange="this.submit()">
+                                        <select class="js-select" name="len">
+                                            <? foreach ($arLen as $len):?>
+                                                <option value="<?=$len?>" <?=($len == $currentLen) ? 'selected' : null; ?>><?=$len?></option>
+                                            <? endforeach; ?>
+                                        </select>
+                                    </form>
 								</div>
 								<ul class="view-mode_list">
 									<li class="view-mode_list-item product_view-mode_table js-product-view is-active">
@@ -218,8 +199,8 @@ $this->setFrameMode(true);
                         "LIST_PROPERTY_CODE" => $arParams['LIST_PROPERTY_CODE'],
                         "IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
                         "IBLOCK_ID" => $arParams["IBLOCK_ID"],
-                        "ELEMENT_SORT_FIELD" => $arParams["ELEMENT_SORT_FIELD"],
-                        "ELEMENT_SORT_ORDER" => $arParams["ELEMENT_SORT_ORDER"],
+                        "ELEMENT_SORT_FIELD" => ($_REQUEST['SORT']) ?: $arParams["ELEMENT_SORT_FIELD"],
+                        "ELEMENT_SORT_ORDER" => ($_REQUEST['SORT']) ? 'asc' : $arParams["ELEMENT_SORT_ORDER"],
                         "ELEMENT_SORT_FIELD2" => $arParams["ELEMENT_SORT_FIELD2"],
                         "ELEMENT_SORT_ORDER2" => $arParams["ELEMENT_SORT_ORDER2"],
                         "PROPERTY_CODE" => $arParams["LIST_PROPERTY_CODE"],
@@ -245,7 +226,7 @@ $this->setFrameMode(true);
                         "SHOW_404" => $arParams["SHOW_404"],
                         "FILE_404" => $arParams["FILE_404"],
                         "DISPLAY_COMPARE" => $arParams["USE_COMPARE"],
-                        "PAGE_ELEMENT_COUNT" => $arParams["PAGE_ELEMENT_COUNT"],
+                        "PAGE_ELEMENT_COUNT" => ($currentLen) ?: $arParams["PAGE_ELEMENT_COUNT"],
                         "LINE_ELEMENT_COUNT" => $arParams["LINE_ELEMENT_COUNT"],
                         "PRICE_CODE" => $arParams["PRICE_CODE"],
                         "USE_PRICE_COUNT" => $arParams["USE_PRICE_COUNT"],
@@ -312,59 +293,29 @@ $this->setFrameMode(true);
                 );
                 ?>
 
-
                 <div class="tablet-small_visible">
 					<div class="section-title">Наши услуги</div>
-					<div class="sidebar-services">
-						<div class="services-item_sidebar">
-							<div class="services-item_sidebar-header">
-								<span class="services-item_sidebar-icon glipf-air"></span>
-								<span class="services-item_sidebar-title">Установка сплит-системы</span>
-							</div>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-							</p>
-							<a href="" class="services-item_more-details">
-								<span class="text">Подробнее</span> <span class="arrow">→</span>
-							</a>
-						</div>
-						<div class="services-item_sidebar">
-							<div class="services-item_sidebar-header">
-								<span class="services-item_sidebar-icon glipf-tools"></span>
-								<span class="services-item_sidebar-title">Обслуживание сплит-систем</span>
-							</div>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-							</p>
-							<a href="" class="services-item_more-details">
-								<span class="text">Подробнее</span> <span class="arrow">→</span>
-							</a>
-						</div>
-						<div class="services-item_sidebar">
-							<div class="services-item_sidebar-header">
-								<span class="services-item_sidebar-icon glipf-drill"></span>
-								<span class="services-item_sidebar-title">Алмазное бурение</span>
-							</div>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-							</p>
-							<a href="" class="services-item_more-details">
-								<span class="text">Подробнее</span> <span class="arrow">→</span>
-							</a>
-						</div>
-						<div class="services-item_sidebar">
-							<div class="services-item_sidebar-header">
-								<span class="services-item_sidebar-icon glipf-tools"></span>
-								<span class="services-item_sidebar-title">Обслуживание сплит-систем</span>
-							</div>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-							</p>
-							<a href="" class="services-item_more-details">
-								<span class="text">Подробнее</span> <span class="arrow">→</span>
-							</a>
-						</div>
-					</div>
+                    <?$APPLICATION->IncludeComponent("bitrix:news.line", "services.catalog", Array(
+                        "ACTIVE_DATE_FORMAT" => "d.m.Y",	// Формат показа даты
+                        "CACHE_GROUPS" => "Y",	// Учитывать права доступа
+                        "CACHE_TIME" => "300",	// Время кеширования (сек.)
+                        "CACHE_TYPE" => "A",	// Тип кеширования
+                        "DETAIL_URL" => "",	// URL, ведущий на страницу с содержимым элемента раздела
+                        "FIELD_CODE" => array(	// Поля
+                            0 => "PREVIEW_TEXT",
+                        ),
+                        "IBLOCKS" => array(	// Код информационного блока
+                            0 => "5",
+                        ),
+                        "IBLOCK_TYPE" => "news",	// Тип информационного блока
+                        "NEWS_COUNT" => "4",	// Количество новостей на странице
+                        "SORT_BY1" => "ACTIVE_FROM",	// Поле для первой сортировки новостей
+                        "SORT_BY2" => "SORT",	// Поле для второй сортировки новостей
+                        "SORT_ORDER1" => "DESC",	// Направление для первой сортировки новостей
+                        "SORT_ORDER2" => "ASC",	// Направление для второй сортировки новостей
+                    ),
+                        false
+                    );?>
 				</div>
 
 				<div class="text-section"><?=$arCurSection['DESCRIPTION']?></div>

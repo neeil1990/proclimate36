@@ -749,6 +749,8 @@ jQuery(document).ready(function($) {
       }
   });
 
+  $('#success_msg').modal('show');
+
 
 });
 if ($('.map-container').length) {

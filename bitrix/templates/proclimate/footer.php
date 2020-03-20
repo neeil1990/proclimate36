@@ -3,37 +3,48 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="footer-logo">
-                    <a href=""><img data-src="img/static/logo.png" alt="alt"></a>
+                    <a href=""><img data-src="<?=SITE_TEMPLATE_PATH?>/img/static/logo.png" alt="alt"></a>
                 </div>
             </div>
             <div class="col-md-5 footer-nav">
-                <ul class="footer-menu">
-                    <li><a href="">Главная</a></li>
-                    <li><a href="">Каталог товаров</a></li>
-                    <li><a href="">Услуги</a></li>
-                    <li><a href="">Акции</a></li>
-                </ul>
-                <ul class="footer-menu">
-                    <li><a href="">Наши работы</a></li>
-                    <li><a href="">Оплата и доставка</a></li>
-                    <li><a href="">О компании</a></li>
-                </ul>
+                <?$APPLICATION->IncludeComponent(
+                    "bitrix:menu",
+                    "bottom.menu",
+                    array(
+                        "ROOT_MENU_TYPE" => "bottom",
+                        "MENU_CACHE_TYPE" => "A",
+                        "MENU_CACHE_TIME" => "36000000",
+                        "MENU_CACHE_USE_GROUPS" => "Y",
+                        "MENU_THEME" => "site",
+                        "CACHE_SELECTED_ITEMS" => "N",
+                        "MENU_CACHE_GET_VARS" => array(
+                        ),
+                        "MAX_LEVEL" => "1",
+                        "USE_EXT" => "N",
+                        "DELAY" => "N",
+                        "ALLOW_MULTI_SELECT" => "N",
+                        "COMPONENT_TEMPLATE" => "bottom.menu1",
+                        "CHILD_MENU_TYPE" => "left"
+                    ),
+                    false
+                );?>
             </div>
             <div class="col-md-3 footer-right_column">
                 <div class="footer-right_content">
                     <ul class="footer-contact">
                         <li>
                             <span class="glipf-phone"></span>
-                            <a href="tel:+79009494229">+7 (900) 949-42-29</a>
+                            <a href="tel:+<?= tplvar('phone');?>"><?= tplvar('phone', true);?></a>
                         </li>
                         <li>
                             <span class="glipf-placeholder"></span>
-                            Воронеж
+                            <?= tplvar('city', true);?>
                         </li>
                         <li>
                             <a href="mailto:online@rusklimat.ru">
                                 <span class="glipf-email"></span>
-                                online@rusklimat.ru</a>
+                                <?= tplvar('email', true);?>
+                            </a>
                         </li>
                     </ul>
                     <ul class="social-network">
@@ -51,30 +62,51 @@
 <div class="scroll-to-top"></div>
 </div>
 <!-- END GLOBAL-WRAPPER -->
+
 <div aria-hidden="true" class="modal fade js-modal" id="callback" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-callback" role="document">
         <div class="modal-content">
             <button aria-label="Close" class="close uhified_close-btn" data-dismiss="modal" type="button"></button>
-            <form action="#" class="form-callback">
-                <div class="form-callback_title">
-                    Заказать звонок
-                    <small>Введите Ваш номер телефона <span class="min">и мы вам перезвоним.</span></small>
-                </div>
-                <div class="form-group">
-                    <labek class="form-label">Ваше имя:</labek>
-                    <input type="text" class="form-input">
-                </div>
-                <div class="form-group">
-                    <labek class="form-label">Ваш телефон:</labek>
-                    <input type="tel" class="form-input">
-                </div>
-                <div class="text-center">
-                    <input type="submit" class="main-btn form-callback_submit" value="Отправить">
-                </div>
-            </form>
+
+            <?$APPLICATION->IncludeComponent(
+                "prime:main.feedback",
+                "",
+                array(
+                    "EVENT_MESSAGE_ID" => array(
+                        0 => "7",
+                    ),
+                    "IBLOCK_ID" => "10",
+                    "IBLOCK_TYPE" => "feedback",
+                    "OK_TEXT" => "Спасибо, ваше сообщение принято.",
+                    "PROPERTY_CODE" => array(
+                        0 => "NAME",
+                        1 => "PHONE",
+                    ),
+                    "USE_CAPTCHA" => "N",
+                    "CAPTCHA_SITE_KEY" => "",
+                    "CAPTCHA_SERVER_KEY" => "",
+                    "COMPONENT_TEMPLATE" => ""
+                ),
+                false
+            );?>
         </div>
     </div>
 </div>
+
+<? if($_REQUEST["success"]): ?>
+    <div aria-hidden="true" class="modal fade js-modal" id="success_msg" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-callback" role="document">
+            <div class="modal-content">
+                <button aria-label="Close" class="close uhified_close-btn" data-dismiss="modal" type="button"></button>
+                <div class="form-callback_title" style="padding: 30px;">
+                    <h3>Сообщение отправлено!</h3>
+                    <small>Мы обязательно вам перезвоним.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+<? endif; ?>
+
 
 <link href="<?=SITE_TEMPLATE_PATH?>/css/min.css" rel="stylesheet" />
 <!-- CSS -->

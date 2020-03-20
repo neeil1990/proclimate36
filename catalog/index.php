@@ -9,6 +9,7 @@ $APPLICATION->SetTitle("catalog");
 	array(
 		"IBLOCK_TYPE" => "catalog",
 		"IBLOCK_ID" => "2",
+		"UF_FILTER_IBLOCK_ID" => "9",
 		"TEMPLATE_THEME" => "site",
 		"HIDE_NOT_AVAILABLE" => "N",
 		"BASKET_URL" => "/personal/cart/",
@@ -60,8 +61,8 @@ $APPLICATION->SetTitle("catalog");
 		"SECTIONS_SHOW_PARENT_NAME" => "N",
 		"PAGE_ELEMENT_COUNT" => "15",
 		"LINE_ELEMENT_COUNT" => "3",
-		"ELEMENT_SORT_FIELD" => "name",
-		"ELEMENT_SORT_ORDER" => "asc",
+		"ELEMENT_SORT_FIELD" => "shows",
+		"ELEMENT_SORT_ORDER" => "desc",
 		"ELEMENT_SORT_FIELD2" => "name",
 		"ELEMENT_SORT_ORDER2" => "asc",
 		"LIST_PROPERTY_CODE" => array(

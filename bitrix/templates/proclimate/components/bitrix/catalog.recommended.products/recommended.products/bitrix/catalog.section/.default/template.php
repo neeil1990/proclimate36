@@ -29,9 +29,10 @@ $this->setFrameMode(true);
         <? foreach ($arResult['ITEMS'] as $key => $arItem): ?>
             <div class="product-item">
             <div class="product-item_img">
-                <div class="product-item_new">
-                    <span class="glipf-new"></span>
-                </div>
+                <?
+                if($arItem['PROPERTIES']['MARK']['VALUE_XML_ID'])
+                    include('mark/'.$arItem['PROPERTIES']['MARK']['VALUE_XML_ID'].'.php');
+                ?>
                 <a href="<?=$arItem['DETAIL_PAGE_URL']?>">
                     <img data-src="<?=$arItem['PREVIEW_PICTURE']['SRC']?>" alt="<?=$arItem['NAME']?>">
                 </a>

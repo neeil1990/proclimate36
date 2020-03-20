@@ -3,44 +3,73 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("О магазине");
 ?>
 
-	<p>Мы рады приветствовать вас на сайте нашей компании.</p>
+<main class="main-content">
+    <div class="about-us_section">
+        <div class="container">
+            <?
+            $APPLICATION->IncludeComponent("bitrix:breadcrumb", "breadcrumb", Array("SITE_ID" => SITE_ID),
+                false
+            );
+            ?>
 
-	<p>Наша компания была основана в 1993 году, а наш интернет-магазин стал одним из первых магазинов, осуществляющих on-line продажу одежды в регионе. Компания специализируется на оптовой и розничной продаже одежды как для дома, так и для офиса.</p>
-
-	<p>На данный момент мы представляем собой крупную компанию, владеющую интернет&ndash;магазином и имеющую в своей сети единый call-центр, который регулирует всю деятельность магазина, отдел продаж, службу доставки, широкий штат квалифицированных сборщиков, собственный склад c постоянным наличием необходимого запаса товаров.</p>
-
-	<p>За это время у нас сложились партнерские отношения с ведущими производителями, позволяющие предлагать высококачественную продукцию по конкурентоспособным ценам.</p>
-
-	<p>Мы можем гордиться тем, что у нас один из самых широких ассортиментов одежды в городе и области. </p>
-
-	<h2>Наши возможности</h2>
-	<div class="row">
-		<div class="col-sm-4">
-			<ul>
-				<li><span style="font-size:13px;">Быстрая доставка</span></li>
-				<li><span style="font-size:13px;">Низкие цены</span></li>
-				<li><span style="font-size:13px;">Широкий ассортимент</span></li>
-				<li><span style="font-size:13px;">Бонусы и подарки</span></li>
-			</ul>
-		</div>
-		<div class="col-sm-4">
-			<ul>
-				<li><span style="font-size:13px;">Отличное обслуживаение</span></li>
-				<li><span style="font-size:13px;">Профессиональный менеджеры</span></li>
-				<li><span style="font-size:13px;">Гарантия на все товары</span></li>
-				<li><span style="font-size:13px;">Надежные поставщики</span></li>
-			</ul>
-		</div>
-		<div class="col-sm-4">
-			<ul>
-				<li><span style="font-size:13px;">Сезонные скидки</span></li>
-				<li><span style="font-size:13px;">Программа лояльности</span></li>
-				<li><span style="font-size:13px;">Карты постоянных клиентов</span></li>
-			</ul>
-		</div>
-	</div>
-	<br/>
-	<p>Мы всегда рады общению с нашими клиентами. Если у вас есть какие-либо пожелания, предложения, замечания, касающиеся работы нашего Интернет-магазина - пишите нам, и мы с благодарностью примем ваше мнение во внимание:</p>
-	<p><b>Электронная почта</b>: <a href="mailto:sale@proclimate36.loc">sale@proclimate36.loc</a></p>
+            <h1>О компании</h1>
+            <div class="row">
+                <div class="col-md-5 order-md-2">
+                    <div class="about-us_img"><img data-src="<?=SITE_TEMPLATE_PATH?>/img/static/about/01.jpg" alt="alt"></div>
+                </div>
+                <div class="col-md-7">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. <br>
+                        Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. <br>
+                        Aenean vulputate eleifend tellus.
+                    </p>
+                    <p>
+                        Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.
+                    </p>
+                    <p>
+                        Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.
+                    </p>
+                </div>
+            </div>
+            <ul class="advantages-list advantages-list_mod">
+                <li class="advantages-item">
+                    <span class="advantages-item_icon glipf-file"></span>
+                    Гарантия <br>от производителя <br>до 5 лет
+                </li>
+                <li class="advantages-item">
+                    <span class="advantages-item_icon glipf-free-delivery"></span>
+                    Бесплатная <br> доставка
+                </li>
+                <li class="advantages-item">
+                    <span class="advantages-item_icon glipf-settings"></span>
+                    Монтаж любой <br>сложности
+                </li>
+                <li class="advantages-item">
+                    <span class="advantages-item_icon glipf-money-2"></span>
+                    Гарантия <br>лучшей цены
+                </li>
+            </ul>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="about-us_img"><img data-src="<?=SITE_TEMPLATE_PATH?>/img/static/about/02.jpg" alt="alt"></div>
+                </div>
+                <div class="col-md-7">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. <br>
+                        Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. <br>
+                        Aenean vulputate eleifend tellus.
+                    </p>
+                    <p>
+                        Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.
+                    </p>
+                    <p>
+                        Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end news-mod_section -->
+</main>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

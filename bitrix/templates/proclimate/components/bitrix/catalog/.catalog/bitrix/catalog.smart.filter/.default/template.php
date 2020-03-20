@@ -197,56 +197,27 @@ $this->setFrameMode(true);
 
     <div class="tablet-small_hidden">
         <div class="section-title sidebar-title">Наши услуги</div>
-        <div class="sidebar-services">
-            <div class="services-item_sidebar">
-                <div class="services-item_sidebar-header">
-                    <span class="services-item_sidebar-icon glipf-air"></span>
-                    <span class="services-item_sidebar-title">Установка сплит-системы</span>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                </p>
-                <a href="" class="services-item_more-details">
-                    <span class="text">Подробнее</span> <span class="arrow">→</span>
-                </a>
-            </div>
-            <div class="services-item_sidebar">
-                <div class="services-item_sidebar-header">
-                    <span class="services-item_sidebar-icon glipf-tools"></span>
-                    <span class="services-item_sidebar-title">Обслуживание сплит-систем</span>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                </p>
-                <a href="" class="services-item_more-details">
-                    <span class="text">Подробнее</span> <span class="arrow">→</span>
-                </a>
-            </div>
-            <div class="services-item_sidebar">
-                <div class="services-item_sidebar-header">
-                    <span class="services-item_sidebar-icon glipf-drill"></span>
-                    <span class="services-item_sidebar-title">Алмазное бурение</span>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                </p>
-                <a href="" class="services-item_more-details">
-                    <span class="text">Подробнее</span> <span class="arrow">→</span>
-                </a>
-            </div>
-            <div class="services-item_sidebar">
-                <div class="services-item_sidebar-header">
-                    <span class="services-item_sidebar-icon glipf-tools"></span>
-                    <span class="services-item_sidebar-title">Обслуживание сплит-систем</span>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                </p>
-                <a href="" class="services-item_more-details">
-                    <span class="text">Подробнее</span> <span class="arrow">→</span>
-                </a>
-            </div>
-        </div>
+        <?$APPLICATION->IncludeComponent("bitrix:news.line", "services.catalog", Array(
+            "ACTIVE_DATE_FORMAT" => "d.m.Y",	// Формат показа даты
+            "CACHE_GROUPS" => "Y",	// Учитывать права доступа
+            "CACHE_TIME" => "300",	// Время кеширования (сек.)
+            "CACHE_TYPE" => "A",	// Тип кеширования
+            "DETAIL_URL" => "",	// URL, ведущий на страницу с содержимым элемента раздела
+            "FIELD_CODE" => array(	// Поля
+                0 => "PREVIEW_TEXT",
+            ),
+            "IBLOCKS" => array(	// Код информационного блока
+                0 => "5",
+            ),
+            "IBLOCK_TYPE" => "news",	// Тип информационного блока
+            "NEWS_COUNT" => "4",	// Количество новостей на странице
+            "SORT_BY1" => "ACTIVE_FROM",	// Поле для первой сортировки новостей
+            "SORT_BY2" => "SORT",	// Поле для второй сортировки новостей
+            "SORT_ORDER1" => "DESC",	// Направление для первой сортировки новостей
+            "SORT_ORDER2" => "ASC",	// Направление для второй сортировки новостей
+        ),
+            false
+        );?>
     </div>
 </aside>
 

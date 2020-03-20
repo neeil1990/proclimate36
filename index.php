@@ -7,47 +7,60 @@ $APPLICATION->SetTitle("Кондиционеры в Воронеже");
 
     <div class="main-section">
         <div class="container">
-            <div class="main-slider">
-
-                <div class="main-slide">
-                    <div class="row align-items-center">
-                        <div class="col-md-6 order-md-2">
-                            <div class="main-slide_title tablet-small_visible">
-                                Кондиционеры <br> в Воронеже
-                            </div>
-                            <div class="main-slide_img">
-                                <img data-src="img/static/main-slider/01.png" alt="alt">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="main-slide_title tablet-small_hidden">
-                                Кондиционеры <br> в Воронеже
-                            </div>
-                            <p>
-                                Мы предлагаем широкий выбор кондиционеров и сплит-систем
-                                на любой вкус и достаток, а также качественную установку
-                                и сервисное обслуживание
-                            </p>
-                            <a href="" class="main-btn main-slide_btn">В каталог</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            <?$APPLICATION->IncludeComponent("bitrix:news.line", "slider", Array(
+                "ACTIVE_DATE_FORMAT" => "d.m.Y",	// Формат показа даты
+                "CACHE_GROUPS" => "Y",	// Учитывать права доступа
+                "CACHE_TIME" => "300",	// Время кеширования (сек.)
+                "CACHE_TYPE" => "A",	// Тип кеширования
+                "DETAIL_URL" => "",	// URL, ведущий на страницу с содержимым элемента раздела
+                "FIELD_CODE" => array(	// Поля
+                    0 => "CODE",
+                    1 => "NAME",
+                    2 => "PREVIEW_TEXT",
+                    3 => "PREVIEW_PICTURE",
+                    4 => "",
+                ),
+                "IBLOCKS" => array(	// Код информационного блока
+                    0 => "7",
+                ),
+                "IBLOCK_TYPE" => "news",	// Тип информационного блока
+                "NEWS_COUNT" => "20",	// Количество новостей на странице
+                "SORT_BY1" => "ACTIVE_FROM",	// Поле для первой сортировки новостей
+                "SORT_BY2" => "SORT",	// Поле для второй сортировки новостей
+                "SORT_ORDER1" => "DESC",	// Направление для первой сортировки новостей
+                "SORT_ORDER2" => "ASC",	// Направление для второй сортировки новостей
+            ),
+                false
+            );?>
         </div>
     </div>
     <!-- end main-section -->
 
     <div class="advantages-section">
         <div class="container">
-            <ul class="advantages-list">
-
-                <li class="advantages-item">
-                    <span class="advantages-item_icon glipf-delivery"></span>
-                    Быстрая <br> доставка
-                </li>
-
-            </ul>
+            <?$APPLICATION->IncludeComponent("bitrix:news.line", "advantage", Array(
+                "ACTIVE_DATE_FORMAT" => "d.m.Y",	// Формат показа даты
+                "CACHE_GROUPS" => "Y",	// Учитывать права доступа
+                "CACHE_TIME" => "300",	// Время кеширования (сек.)
+                "CACHE_TYPE" => "A",	// Тип кеширования
+                "DETAIL_URL" => "",	// URL, ведущий на страницу с содержимым элемента раздела
+                "FIELD_CODE" => array(	// Поля
+                    0 => "CODE",
+                    1 => "PREVIEW_TEXT",
+                    2 => "",
+                ),
+                "IBLOCKS" => array(	// Код информационного блока
+                    0 => "8",
+                ),
+                "IBLOCK_TYPE" => "news",	// Тип информационного блока
+                "NEWS_COUNT" => "20",	// Количество новостей на странице
+                "SORT_BY1" => "ACTIVE_FROM",	// Поле для первой сортировки новостей
+                "SORT_BY2" => "SORT",	// Поле для второй сортировки новостей
+                "SORT_ORDER1" => "DESC",	// Направление для первой сортировки новостей
+                "SORT_ORDER2" => "ASC",	// Направление для второй сортировки новостей
+            ),
+                false
+            );?>
         </div>
     </div>
     <!-- end advantages-section -->
@@ -78,59 +91,157 @@ $APPLICATION->SetTitle("Кондиционеры в Воронеже");
         );?>
         <!-- end category-section -->
 
-        <div class="product-section">
-            <div class="section-title">Популярные товары</div>
-            <div class="row product-slider">
+        <?
+        $arPopular = array();
+        $arSelect = Array("IBLOCK_ID", "ID", "NAME");
+        $arFilter = Array("IBLOCK_ID" => 2, "ACTIVE" => "Y", "PROPERTY_POPULAR_VALUE" => "Y");
+        $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+        while($ob = $res->GetNextElement())
+        {
+            $arFields = $ob->GetFields();
+            $arPopular['IDS'][] = $arFields['ID'];
+            $arPopular['IBLOCK_ID'] = $arFields['IBLOCK_ID'];
+        }
 
-                <div class="col-xl-3">
-                    <div class="product-item">
-                        <div class="product-item_img">
-                            <div class="product-item_top">
-                                <span class="glipf-top"></span>тор
-                            </div>
-                            <a href=""><img data-src="img/static/product/01.jpg" alt="alt"></a>
-                        </div>
-                        <span class="product-item_category">Настенный кондиционер</span>
-                        <div class="product-item_title">
-                            <a href="">Ballu BSAG-09HN1_17Y</a>
-                        </div>
-                        <span class="product-item_price">25 290 руб</span>
-                        <div class="product-item_hidden">
-                            <ul class="product-item_features">
-                                <li>
-                                    <span class="glipf-conditioner"></span>
-                                    <span class="gray-color">Тип</span> - сплит-система
-                                </li>
-                                <li>
-                                    <span class="glipf-swing"></span>
-                                    <span class="gray-color">Площадь</span> - 100 м2
-                                </li>
-                                <li>
-                                    <span class="glipf-compressor"></span>
-                                    <span class="gray-color">Компрессор</span> - обычный
-                                </li>
-                                <li>
-                                    <span class="glipf-cold"></span>
-                                    <span class="gray-color">Охлаждение</span> - 3,12 кВт
-                                </li>
-                            </ul>
-                            <a href="" class="product-item_buy-btn main-btn">Купить</a>
-                        </div>
-                    </div>
-                </div>
+        if($arPopular['IDS']){
 
-            </div>
-            <div class="text-center">
-                <a href="" class="all-product_btn main-btn">Все товары</a>
-            </div>
-        </div>
+            global $popularFilter;
+
+            $popularFilter = array(
+                "=ID" => $arPopular['IDS'],
+            );
+
+            $APPLICATION->IncludeComponent(
+	"bitrix:catalog.section",
+	"popular",
+	array(
+		"ACTION_VARIABLE" => "action_crp",
+		"ADD_PICT_PROP" => "-",
+		"ADD_PROPERTIES_TO_BASKET" => "Y",
+		"ADD_SECTIONS_CHAIN" => "N",
+		"ADD_TO_BASKET_ACTION" => "ADD",
+		"AJAX_MODE" => "N",
+		"AJAX_OPTION_ADDITIONAL" => "",
+		"AJAX_OPTION_HISTORY" => "N",
+		"AJAX_OPTION_JUMP" => "N",
+		"AJAX_OPTION_STYLE" => "N",
+		"BACKGROUND_IMAGE" => "-",
+		"BASKET_URL" => "/personal/basket.php",
+		"BROWSER_TITLE" => "-",
+		"CACHE_FILTER" => "N",
+		"CACHE_GROUPS" => "Y",
+		"CACHE_TIME" => "36000000",
+		"CACHE_TYPE" => "A",
+		"COMPATIBLE_MODE" => "Y",
+		"CONVERT_CURRENCY" => "N",
+		"CUSTOM_FILTER" => "",
+		"DISABLE_INIT_JS_IN_COMPONENT" => "N",
+		"DISPLAY_BOTTOM_PAGER" => "Y",
+		"DISPLAY_COMPARE" => "N",
+		"DISPLAY_TOP_PAGER" => "N",
+		"ELEMENT_SORT_FIELD" => "sort",
+		"ELEMENT_SORT_FIELD2" => "id",
+		"ELEMENT_SORT_ORDER" => "asc",
+		"ELEMENT_SORT_ORDER2" => "desc",
+		"ENLARGE_PRODUCT" => "STRICT",
+		"FILTER_NAME" => "popularFilter",
+		"HIDE_NOT_AVAILABLE" => "N",
+		"HIDE_NOT_AVAILABLE_OFFERS" => "N",
+		"IBLOCK_ID" => $arPopular["IBLOCK_ID"],
+		"LIST_PROPERTY_CODE" => array(
+			0 => "TYPE",
+			1 => "AREA",
+			2 => "COMPRESSOR",
+			3 => "COOLING",
+		),
+		"IBLOCK_TYPE" => "catalog",
+		"INCLUDE_SUBSECTIONS" => "Y",
+		"LABEL_PROP" => "",
+		"LAZY_LOAD" => "N",
+		"LINE_ELEMENT_COUNT" => "3",
+		"LOAD_ON_SCROLL" => "N",
+		"MESSAGE_404" => "",
+		"MESS_BTN_ADD_TO_BASKET" => "В корзину",
+		"MESS_BTN_BUY" => "Купить",
+		"MESS_BTN_DETAIL" => "Подробнее",
+		"MESS_BTN_SUBSCRIBE" => "Подписаться",
+		"MESS_NOT_AVAILABLE" => "Нет в наличии",
+		"META_DESCRIPTION" => "-",
+		"META_KEYWORDS" => "-",
+		"OFFERS_LIMIT" => "5",
+		"PAGER_BASE_LINK_ENABLE" => "N",
+		"PAGER_DESC_NUMBERING" => "N",
+		"PAGER_DESC_NUMBERING_CACHE_TIME" => "36000",
+		"PAGER_SHOW_ALL" => "N",
+		"PAGER_SHOW_ALWAYS" => "N",
+		"PAGER_TEMPLATE" => ".default",
+		"PAGER_TITLE" => "Товары",
+		"PAGE_ELEMENT_COUNT" => "18",
+		"PARTIAL_PRODUCT_PROPERTIES" => "N",
+		"PRICE_CODE" => array(
+			0 => "BASE",
+		),
+		"PRICE_VAT_INCLUDE" => "Y",
+		"PRODUCT_BLOCKS_ORDER" => "price,props,sku,quantityLimit,quantity,buttons",
+		"PRODUCT_ID_VARIABLE" => "id",
+		"PRODUCT_PROPS_VARIABLE" => "prop",
+		"PRODUCT_QUANTITY_VARIABLE" => "quantity",
+		"PRODUCT_ROW_VARIANTS" => "[{'VARIANT':'2','BIG_DATA':false},{'VARIANT':'2','BIG_DATA':false},{'VARIANT':'2','BIG_DATA':false},{'VARIANT':'2','BIG_DATA':false},{'VARIANT':'2','BIG_DATA':false},{'VARIANT':'2','BIG_DATA':false}]",
+		"PRODUCT_SUBSCRIPTION" => "Y",
+		"RCM_PROD_ID" => $_REQUEST["PRODUCT_ID"],
+		"RCM_TYPE" => "personal",
+		"SECTION_CODE" => "",
+		"SECTION_CODE_PATH" => $_REQUEST["SECTION_CODE_PATH"],
+		"SECTION_ID" => "",
+		"SECTION_USER_FIELDS" => array(
+			0 => "",
+			1 => "",
+		),
+		"SEF_MODE" => "N",
+		"SET_BROWSER_TITLE" => "Y",
+		"SET_LAST_MODIFIED" => "N",
+		"SET_META_DESCRIPTION" => "Y",
+		"SET_META_KEYWORDS" => "Y",
+		"SET_STATUS_404" => "N",
+		"SET_TITLE" => "Y",
+		"SHOW_404" => "N",
+		"SHOW_ALL_WO_SECTION" => "N",
+		"SHOW_CLOSE_POPUP" => "N",
+		"SHOW_DISCOUNT_PERCENT" => "N",
+		"SHOW_FROM_SECTION" => "N",
+		"SHOW_MAX_QUANTITY" => "N",
+		"SHOW_OLD_PRICE" => "N",
+		"SHOW_PRICE_COUNT" => "1",
+		"SHOW_SLIDER" => "Y",
+		"SLIDER_INTERVAL" => "3000",
+		"SLIDER_PROGRESS" => "N",
+		"TEMPLATE_THEME" => "blue",
+		"USE_ENHANCED_ECOMMERCE" => "N",
+		"USE_MAIN_ELEMENT_SECTION" => "N",
+		"USE_PRICE_COUNT" => "N",
+		"USE_PRODUCT_QUANTITY" => "N",
+		"COMPONENT_TEMPLATE" => "popular",
+		"SECTION_URL" => "",
+		"DETAIL_URL" => "",
+		"SECTION_ID_VARIABLE" => "",
+		"SEF_RULE" => ""
+	),
+	false
+);
+        }
+        ?>
         <!-- end product-section -->
-        <div class="banner">
-            <div class="banner-title">
-                Подготовтесь к лету <br>уже сейчас!
-            </div>
-            <a href="" class="banner-btn">Подробнее</a>
-        </div>
+
+        <?$APPLICATION->IncludeComponent(
+            "bitrix:main.include",
+            "",
+            Array(
+                "AREA_FILE_SHOW" => "file",
+                "AREA_FILE_SUFFIX" => "inc",
+                "EDIT_TEMPLATE" => "",
+                "PATH" => "/include/banner.php"
+            )
+        );?>
         <!-- end banner -->
 
         <?$APPLICATION->IncludeComponent(
@@ -196,6 +307,7 @@ $APPLICATION->SetTitle("Кондиционеры в Воронеже");
         );?>
         <!-- end brands-section -->
     </div>
+
     <div class="contact-section">
         <div class="container-fluid">
             <div class="row no-gutters  align-items-center">
@@ -205,16 +317,17 @@ $APPLICATION->SetTitle("Кондиционеры в Воронеже");
                         <ul class="contact-list">
                             <li>
                                 <span class="glipf-placeholder"></span>
-                                г. Воронеж, Монтажный проезд, д. 26
+                                <?= tplvar('street', true);?>
                             </li>
                             <li>
                                 <span class="glipf-phone"></span>
-                                <a href="tel:88007771977">8 (800) 777-19-77</a>
+                                <a href="tel:<?= tplvar('phone');?>"><?= tplvar('phone', true);?></a>
                             </li>
                             <li>
                                 <a href="mailto:online@rusklimat.ru">
                                     <span class="glipf-email"></span>
-                                    online@rusklimat.ru</a>
+                                    <?= tplvar('email', true);?>
+                                </a>
                             </li>
                         </ul>
                         <a href="#callback" data-toggle="modal" class="callback-btn main-btn">Заказать звонок</a>

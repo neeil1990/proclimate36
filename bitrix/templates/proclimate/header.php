@@ -38,7 +38,9 @@
                             </div>
                         </div>
                         <div class="head-logo">
-                            <a href=""><img data-src="<?=SITE_TEMPLATE_PATH?>/img/static/logo.png" alt="alt"></a>
+                            <a href="/">
+                                <img data-src="<?=SITE_TEMPLATE_PATH?>/img/static/logo.png" alt="alt">
+                            </a>
                         </div>
                     </div>
                     <div class="col-sm-9 col-5 head_right-column">
@@ -68,10 +70,10 @@
                         </div>
 
                         <div class="head-contact">
-                            <a href="tel:+79009494229" class="head_phone-number">
-                                <span class="glipf-phone"></span>+7 (900) 949-42-29</a>
+                            <a href="tel:<?= tplvar('phone');?>" class="head_phone-number">
+                                <span class="glipf-phone"></span><?= tplvar('phone', true);?></a>
                             <div class="head-adress">
-                                <span class="glipf-placeholder"></span>Воронеж
+                                <span class="glipf-placeholder"></span><?= tplvar('city', true);?>
                             </div>
                         </div>
                     </div>

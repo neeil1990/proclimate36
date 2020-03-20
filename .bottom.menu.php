@@ -1,48 +1,76 @@
 <?
 $aMenuLinks = Array(
 	Array(
-		"Новости",
-		"news/",
+		"Главная",
+		"/",
 		Array(),
 		Array(),
 		""
 	),
 
 	Array(
-		"Как купить",
-		"about/howto/",
-		Array(), 
-		Array(), 
-		"" 
+		"Каталог товаров",
+		"catalog/",
+		Array(),
+		Array(),
+		""
 	),
 
 	Array(
-		"Доставка",
-		"about/delivery/",
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"О магазине",
-		"about/",
+		"Услуги",
+		"services/",
 		Array(),
 		Array(),
 		""
 	),
+    Array(
+        "Новости",
+        "news/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Акции",
+        "action/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Наши работы",
+        "works/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Оплата и доставка",
+        "payment/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "О компании",
+        "about/",
+        Array(),
+        Array(),
+        ""
+    ),
 	Array(
-		"Гарантия",
-		"about/guaranty/",
-		Array(),
-		Array(),
-		""
-	),
-	Array(
-		"Контакты",
-		"about/contacts/",
-		Array(),
-		Array(),
-		""
-	),
+        "Контакты",
+        "contact/",
+        Array(),
+        Array(),
+        ""
+    ),
+    Array(
+        "Мой кабинет",
+        "personal/",
+        Array(),
+        Array(),
+        "CUser::IsAuthorized()"
+    ),
 );
 ?>

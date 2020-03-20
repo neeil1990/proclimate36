@@ -28,9 +28,10 @@ $this->setFrameMode(true);
             <? foreach ($arResult['PROPERTIES']['GALLERY']['VALUE'] as $key => $gallery):?>
                 <a href="<?=$gallery?>" class="fancybox selected-product_large-img" data-fancybox="group">
                 <img data-src="<?=$gallery?>" alt="<?=$arResult['NAME']?>">
-                <div class="product-item_new">
-                    <span class="<?=$arResult['PROPERTIES']['GALLERY']['DESCRIPTION'][$key]?>"></span>
-                </div>
+                <?
+                if($arResult['PROPERTIES']['MARK']['VALUE_XML_ID'])
+                    include('mark/'.$arResult['PROPERTIES']['MARK']['VALUE_XML_ID'].'.php');
+                ?>
             </a>
             <? endforeach; ?>
         </div>
@@ -78,7 +79,7 @@ $this->setFrameMode(true);
                         </div>
                         <span class="selected-product_price"><?=$arResult['PRICES']['BASE']['PRINT_VALUE']?></span>
                         <a href="" class="selected-product_buy-btn main-btn" data-id="<?=$arResult['ID']?>">Купить</a>
-                        <a href="" class="selected-product_help-btn border-blue_btn">Помощь специалиста</a>
+                        <a href="#callback" data-toggle="modal" class="selected-product_help-btn border-blue_btn">Помощь специалиста</a>
                         <div class="selected-product_services-title">Выберите услугу:</div>
                         <ul class="selected-product_services-list">
 
@@ -109,21 +110,24 @@ $this->setFrameMode(true);
     </div>
 </div>
 
+<? if($arResult['PROPERTIES']['VERSOIN']['VALUE']): ?>
 <div class="products_same-series">
-    <span class="products_same-series_title">Кондиционеры из серии VELA другой мощности:</span>
+    <span class="products_same-series_title">Кондиционеры из серии <?=$arResult['PROPERTIES']['VERSOIN']['VALUE']?> другой мощности:</span>
     <ul class="products_same-series_list">
-
+        <? foreach ($arResult['PROPERTIES']['OTHER_CLIMAT']['VALUE'] as $link => $val):?>
         <li class="product_same-series_item">
-            <a href="">
-                <span class="product_same-series_content">
-                    Площадь ох-ния до 30 кв.м
-                </span>
-                <span class="product_same-series_price">19 590 руб</span>
+            <a href="<?=$arResult['PROPERTIES']['OTHER_CLIMAT']['DESCRIPTION'][$link]?>">
+                <?
+                $arValue = explode('/', $val, 2);
+                ?>
+                <span class="product_same-series_content"><?=$arValue[0]?></span>
+                <span class="product_same-series_price"><?=$arValue[1]?></span>
             </a>
         </li>
-
+        <? endforeach; ?>
     </ul>
 </div>
+<? endif; ?>
 <!-- end products_same-series -->
 
 <div class="tab-container">
@@ -135,9 +139,7 @@ $this->setFrameMode(true);
     <div class="selected-product_content-tabs">
         <div class="tab-item is-visible"><?=$arResult['DETAIL_TEXT']?></div>
         <div class="tab-item"><?=$arResult['PROPERTIES']['OPTION_TEXT']['~VALUE']['TEXT']?></div>
-        <div class="tab-item">
-            Оплата и доставка
-        </div>
+        <div class="tab-item"><?=$arResult['PROPERTIES']['DELIVERY_TEXT']['~VALUE']['TEXT']?></div>
     </div>
 </div>
 
