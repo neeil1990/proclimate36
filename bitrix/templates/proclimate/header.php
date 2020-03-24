@@ -44,17 +44,32 @@
                         </div>
                     </div>
                     <div class="col-sm-9 col-5 head_right-column">
-                        <div class="wrapper-head_form-search">
-                            <div class="head_search_icon"><span class="glipf-search"></span></div>
-                            <form action="#" class="head_form-search">
-                                <input type="text" class="head_form-search_input" placeholder="Поиск среди 4000 товаров">
-                                <input type="submit" class="head_form-search_submit" value="Найти">
-                            </form>
-                        </div>
+                        <?$APPLICATION->IncludeComponent("bitrix:search.title", "search.title", Array(
+                            "CATEGORY_0" => array(	// Ограничение области поиска
+                                0 => "iblock_catalog",
+                            ),
+                            "CATEGORY_0_TITLE" => "",	// Название категории
+                            "CATEGORY_0_iblock_catalog" => array(	// Искать в информационных блоках типа "iblock_catalog"
+                                0 => "2",
+                            ),
+                            "CHECK_DATES" => "N",	// Искать только в активных по дате документах
+                            "CONTAINER_ID" => "title-search",	// ID контейнера, по ширине которого будут выводиться результаты
+                            "INPUT_ID" => "title-search-input",	// ID строки ввода поискового запроса
+                            "NUM_CATEGORIES" => "1",	// Количество категорий поиска
+                            "ORDER" => "rank",	// Сортировка результатов
+                            "PAGE" => "#SITE_DIR#search/index.php",	// Страница выдачи результатов поиска (доступен макрос #SITE_DIR#)
+                            "SHOW_INPUT" => "Y",	// Показывать форму ввода поискового запроса
+                            "SHOW_OTHERS" => "N",	// Показывать категорию "прочее"
+                            "TOP_COUNT" => "10",	// Количество результатов в каждой категории
+                            "USE_LANGUAGE_GUESS" => "N",	// Включить автоопределение раскладки клавиатуры
+                        ),
+                            false
+                        );?>
 
                         <div class="head-cart" id="small_cart">
                             <?$APPLICATION->IncludeComponent("bitrix:sale.basket.basket.line", "basket.small", Array(
                                 "HIDE_ON_BASKET_PAGES" => "N",	// Не показывать на страницах корзины и оформления заказа
+                                "SERVICE_IBLOCK_ID" => "13",
                                 "POSITION_FIXED" => "N",	// Отображать корзину поверх шаблона
                                 "SHOW_AUTHOR" => "N",	// Добавить возможность авторизации
                                 "SHOW_EMPTY_VALUES" => "Y",	// Выводить нулевые значения в пустой корзине

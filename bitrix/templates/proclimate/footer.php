@@ -41,7 +41,7 @@
                             <?= tplvar('city', true);?>
                         </li>
                         <li>
-                            <a href="mailto:online@rusklimat.ru">
+                            <a href="mailto:<?= tplvar('email');?>">
                                 <span class="glipf-email"></span>
                                 <?= tplvar('email', true);?>
                             </a>

@@ -9,6 +9,7 @@ $APPLICATION->SetTitle("catalog");
 	array(
 		"IBLOCK_TYPE" => "catalog",
 		"IBLOCK_ID" => "2",
+		"SERVICE_IBLOCK_ID" => "13",
 		"UF_FILTER_IBLOCK_ID" => "9",
 		"TEMPLATE_THEME" => "site",
 		"HIDE_NOT_AVAILABLE" => "N",

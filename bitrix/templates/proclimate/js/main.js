@@ -749,6 +749,12 @@ jQuery(document).ready(function($) {
       }
   });
 
+  $('.catalog_service').change(function () {
+    $.get("/ajax/service.php", {name : $(this).val()}).done(function (data) {
+      alertify.success('Услуга добавлена');
+    });
+  });
+
   $('#success_msg').modal('show');
 
 

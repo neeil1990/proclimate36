@@ -80,29 +80,20 @@ $this->setFrameMode(true);
                         <span class="selected-product_price"><?=$arResult['PRICES']['BASE']['PRINT_VALUE']?></span>
                         <a href="" class="selected-product_buy-btn main-btn" data-id="<?=$arResult['ID']?>">Купить</a>
                         <a href="#callback" data-toggle="modal" class="selected-product_help-btn border-blue_btn">Помощь специалиста</a>
+                        <? if($arResult['SERVICE']):?>
                         <div class="selected-product_services-title">Выберите услугу:</div>
                         <ul class="selected-product_services-list">
-
+                            <? foreach ($arResult['SERVICE'] as $service):?>
                             <li>
                                 <label class="unified-radio unified-radio_mod">
-                                    <input value="" type="radio" name="radio">
-                                    <span class="radio-text">Алмазное бурение</span>
+                                    <input value="<?=$service['NAME']?>" type="radio" class="catalog_service" name="service_cat" <?=($_SESSION['CATALOG_SERVICE'] == $service['NAME']) ? 'checked' : null?>>
+                                    <span class="radio-text"><?=$service['NAME']?></span>
                                 </label>
-                                <div class="selected-product_hint">
-                                    <p>
-                                        <strong>Сервисное обслуживание сплит-систем</strong> – это комплекс мероприятий, которые не касаются замены деталей и узлов оборудования. В общий перечень услуг входят:
-                                    </p>
-                                    <ul>
-                                        <li>замер давления хладагента</li>
-                                        <li>дозаправка</li>
-                                        <li>чистка внутреннего и внешнего блоков</li>
-                                        <li>чистка дренажной системы</li>
-                                        <li>чистка теплообменника и турбины</li>
-                                    </ul>
-                                </div>
+                                <div class="selected-product_hint"><?=$service['PREVIEW_TEXT']?></div>
                             </li>
-
+                            <? endforeach; ?>
                         </ul>
+                        <? endif; ?>
                     </div>
                 </div>
             </div>

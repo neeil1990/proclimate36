@@ -24,19 +24,21 @@
                 <? endforeach; ?>
             </div>
 
+            <? if($arResult['SERVICE']):?>
             <div class="head-cart_services-box">
                 <div class="head-cart_services-header">Выберите услугу</div>
                 <ul class="head-cart_services-list">
-
+                    <? foreach ($arResult['SERVICE'] as $service):?>
                     <li>
                         <label class="unified-radio unified-radio_mod">
-                            <input value="" type="radio" name="radio10">
-                            <span class="radio-text">Алмазное бурение</span>
+                            <input value="<?=$service['NAME']?>" type="radio" class="catalog_service" name="service_cart" <?=($_SESSION['CATALOG_SERVICE'] == $service['NAME']) ? 'checked' : null?>>
+                            <span class="radio-text"><?=$service['NAME']?></span>
                         </label>
                     </li>
-
+                    <? endforeach; ?>
                 </ul>
             </div>
+            <? endif; ?>
 
             <div class="head-cart_dropdown-footer">
                 <span class="text">Итог:</span>

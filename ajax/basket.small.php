@@ -2,6 +2,7 @@
 
 <?$APPLICATION->IncludeComponent("bitrix:sale.basket.basket.line", "basket.small", Array(
     "HIDE_ON_BASKET_PAGES" => "N",	// Не показывать на страницах корзины и оформления заказа
+    "SERVICE_IBLOCK_ID" => "13",
     "POSITION_FIXED" => "N",	// Отображать корзину поверх шаблона
     "SHOW_AUTHOR" => "N",	// Добавить возможность авторизации
     "SHOW_EMPTY_VALUES" => "Y",	// Выводить нулевые значения в пустой корзине
