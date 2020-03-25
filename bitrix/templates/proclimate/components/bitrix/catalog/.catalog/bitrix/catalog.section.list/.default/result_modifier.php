@@ -20,16 +20,13 @@ if ('Y' != $arParams['HIDE_SECTION_NAME'])
 
 $arResult['VIEW_MODE_LIST'] = $arViewModeList;
 
-
-
-
 if (0 < $arResult['SECTIONS_COUNT'])
 {
+	$arData = array();
 	foreach($arResult['SECTIONS'] as $key => $section){
-		$arResult['SECTIONS'][$section['ID']] = $section;
-		unset($arResult['SECTIONS'][$key]);
+		$arData[$section['ID']] = $section;
 	}
-	$arSection = array_reverse($arResult['SECTIONS'], true);
+	$arSection = array_reverse($arData, true);
 	foreach($arSection as $id => &$section){
 		if($section['IBLOCK_SECTION_ID']){
 			$arSection[$section['IBLOCK_SECTION_ID']]['SUB'][$id] = $section;

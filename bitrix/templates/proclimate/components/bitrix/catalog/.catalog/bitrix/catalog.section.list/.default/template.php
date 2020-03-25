@@ -19,14 +19,14 @@ $this->setFrameMode(true);
             <span class="category-item_mod-img">
                 <img data-src="<?=$arSection['PICTURE']['SRC']?>" alt="<?=$arSection['NAME']?>">
             </span>
-            <div class="category-item_mod-title"><?=$arSection['NAME']?></div>
+            <div class="category-item_mod-title"><a href="<?=$arSection['SECTION_PAGE_URL']?>"><?=$arSection['NAME']?></a></div>
             <span class="category-item_view-categories">Посмотреть категории</span>
 
             <? if($arSection['SUB']): ?>
             <ul class="category-item_list">
                 <? foreach ($arSection['SUB'] as $section_2): ?>
                 <li class="category-item_list-title">
-                    <?=$section_2['NAME']?>
+                    <a href="<?=$section_2['SECTION_PAGE_URL']?>"><?=$section_2['NAME']?></a>
 
                     <? if($section_2['SUB']): ?>
                     <ul class="category-item_submenu">
