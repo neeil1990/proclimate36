@@ -63,7 +63,10 @@ $this->setFrameMode(true);
                 <div class="col-sm-5 col-mod-right">
                     <div class="selected-product_features-title">Основные характеристики:</div>
                     <ul class="selected-product_features">
-                        <? foreach ($arParams['DETAIL_PROPERTY_CODE'] as $code):?>
+                        <? foreach ($arParams['DETAIL_PROPERTY_CODE'] as $code):
+                            if(!$arResult['PROPERTIES'][$code]['VALUE'])
+                                continue;
+                            ?>
                         <li>
                             <span class="<?=($arResult['PROPERTIES'][$code]['HINT']) ?: 'glipf-swing'?>"></span>
                             <?=$arResult['PROPERTIES'][$code]['NAME']?> - <? echo (is_array($arResult['PROPERTIES'][$code]['VALUE']) ? implode(' / ', $arResult['PROPERTIES'][$code]['VALUE']) : $arResult['PROPERTIES'][$code]['VALUE']);?>

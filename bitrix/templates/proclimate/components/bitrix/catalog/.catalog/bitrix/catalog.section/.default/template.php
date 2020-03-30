@@ -29,9 +29,7 @@ $this->setFrameMode(true);
                 </div>
                 <div class="product-item_desc">
                     <div class="product_item_desc-top">
-                        <span class="product-item_category">
-                            <?=($arItem['~IBLOCK_SECTION_ID']) ? CIBlockSection::GetByID($arItem['~IBLOCK_SECTION_ID'])->GetNext()['NAME'] : '';?>
-                        </span>
+                        <span class="product-item_category"></span>
                         <div class="product-item_title">
                             <a href="<?=$arItem['DETAIL_PAGE_URL']?>">
                                 <?=$arItem['NAME']?>
@@ -41,7 +39,10 @@ $this->setFrameMode(true);
                     </div>
                     <div class="product-item_hidden">
                         <ul class="product-item_features">
-                            <? foreach ($arParams['LIST_PROPERTY_CODE'] as $code):?>
+                            <? foreach ($arParams['LIST_PROPERTY_CODE'] as $code):
+                                if(!$arItem['PROPERTIES'][$code]['VALUE'])
+                                    continue;
+                                ?>
                                 <li>
                                     <span class="<?=($arItem['PROPERTIES'][$code]['HINT']) ?: 'glipf-swing'?>"></span>
                                     <span class="gray-color"><?=$arItem['PROPERTIES'][$code]['NAME']?></span> -
