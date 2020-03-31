@@ -462,5 +462,16 @@ if (!empty($arResult['ITEMS']))
 			unset($currencyFormat, $currency, $currencyIterator);
 		}
 	}
+
+	foreach ($arResult['ITEMS'] as $key => &$arItem){
+		if($arItem['PREVIEW_PICTURE']){
+			$arItem['PREVIEW_PICTURE']['SRC'] = CFile::ResizeImageGet(
+				$arItem['PREVIEW_PICTURE']['ID'],
+				["width" => 230, "height" => 195],
+				BX_RESIZE_IMAGE_PROPORTIONAL,
+				true
+			)['src'];
+		}
+	}
 }
 ?>
