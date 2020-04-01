@@ -42,6 +42,7 @@ else
                 "IBLOCK_ID" => $arParams["IBLOCK_ID"],
                 "SERVICE_IBLOCK_ID" => $arParams["SERVICE_IBLOCK_ID"],
                 "PROPERTY_CODE" => $arParams["DETAIL_PROPERTY_CODE"],
+                "DETAIL_MAIN_PROPERTY_CODE" => $arParams["DETAIL_MAIN_PROPERTY_CODE"],
                 "META_KEYWORDS" => $arParams["DETAIL_META_KEYWORDS"],
                 "META_DESCRIPTION" => $arParams["DETAIL_META_DESCRIPTION"],
                 "BROWSER_TITLE" => $arParams["DETAIL_BROWSER_TITLE"],

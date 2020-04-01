@@ -103,6 +103,17 @@ $APPLICATION->SetTitle("catalog");
             7 => "SIZE",
             8 => "WEIGHT"
 		),
+        "DETAIL_MAIN_PROPERTY_CODE" => array(
+            0 => "TYPE",
+            1 => "AREA",
+            2 => "COMPRESSOR",
+            3 => "COOLING",
+            4 => "NOIZE",
+            5 => "NIGHT_MODE",
+            6 => "HEAT_MODE",
+            7 => "SIZE",
+            8 => "WEIGHT"
+        ),
 		"DETAIL_META_KEYWORDS" => "-",
 		"DETAIL_META_DESCRIPTION" => "-",
 		"DETAIL_BROWSER_TITLE" => "-",

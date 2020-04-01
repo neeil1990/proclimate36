@@ -130,33 +130,32 @@ $this->setFrameMode(true);
 <div class="tab-container">
     <ul class="selected-product_tab-names">
         <li class="tab active">Описание</li>
-        <? if($arResult['PROPERTIES']['CHAR']): ?>
-            <li class="tab"><?=$arResult['PROPERTIES']['CHAR']['NAME']?></li>
-        <? endif; ?>
+        <li class="tab">Характеристики</li>
         <li class="tab">Оплата и доставка</li>
     </ul>
     <div class="selected-product_content-tabs">
         <div class="tab-item is-visible"><?=$arResult['DETAIL_TEXT']?></div>
-        <? if($arResult['PROPERTIES']['CHAR']): ?>
         <div class="tab-item">
             <ul class="menu-dot">
-                <? foreach ($arResult['PROPERTIES']['CHAR']['VALUE'] as $desc => $value):
-                    $value = explode('/', $value, 2);
+                <? foreach ($arParams['DETAIL_MAIN_PROPERTY_CODE'] as $code):
+                    if(!$arResult['PROPERTIES'][$code]['VALUE'])
+                        continue;
                     ?>
                     <li>
                         <span class="main">
-                            <?=$value[0]?>
+                            <?=$arResult['PROPERTIES'][$code]['NAME']?>
 
-                            <? if($value[1]):?>
-                                <span class="question-mark" title="<?=$value[1]?>">?</span>
+                            <? if($arResult['PROPERTIES'][$code]['DESCRIPTION']):?>
+                                <span class="question-mark" title="<? echo (is_array($arResult['PROPERTIES'][$code]['DESCRIPTION']) ? implode(' / ', $arResult['PROPERTIES'][$code]['DESCRIPTION']) : $arResult['PROPERTIES'][$code]['DESCRIPTION']);?>">?</span>
                             <? endif; ?>
                         </span>
-                        <span class="page"><?=$arResult['PROPERTIES']['CHAR']['DESCRIPTION'][$desc]?></span>
+                        <span class="page">
+                            <? echo (is_array($arResult['PROPERTIES'][$code]['VALUE']) ? implode(' / ', $arResult['PROPERTIES'][$code]['VALUE']) : $arResult['PROPERTIES'][$code]['VALUE']);?>
+                        </span>
                     </li>
                 <? endforeach; ?>
             </ul>
         </div>
-        <? endif; ?>
         <div class="tab-item"><?=$arResult['PROPERTIES']['DELIVERY_TEXT']['~VALUE']['TEXT']?></div>
     </div>
 </div>
