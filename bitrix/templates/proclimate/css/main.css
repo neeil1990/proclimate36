@@ -4060,6 +4060,49 @@ h4, .h4 {
   margin-bottom: 1.6em;
 }
 
+.selected-product_content-tabs .tab-item .menu-dot{
+  width: 100%;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+.selected-product_content-tabs .tab-item .menu-dot li{
+  position: relative;
+  text-align: right;
+  background: url('/bitrix/templates/proclimate/img/bg/dot.png') 0 14px repeat-x;
+  display: inline-block;
+  vertical-align: bottom;
+  width: 100%;
+  margin-bottom: 5px;
+}
+.selected-product_content-tabs .tab-item .menu-dot li span.main{
+  float: left;
+  background: #fff;
+  text-align: left;
+  margin-right: 70px;
+  padding-right: 2px;
+}
+.selected-product_content-tabs .tab-item .menu-dot li span.main .question-mark{
+  display: inline-block;
+  border: 1px solid #b1c0c7;
+  width: 18px;
+  height: 18px;
+  border-radius: 18px;
+  -moz-border-radius: 18px;
+  -webkit-border-radius: 18px;
+  padding: 0 4px;
+  color: #b1c0c7;
+  font-family: Arial,sans-serif;
+  cursor: pointer;
+}
+.selected-product_content-tabs .tab-item .menu-dot li span.page{
+  float: none;
+  text-align: left;
+  background: #fff;
+  position: absolute;
+  right: 0;
+  padding-left: 2px;
+}
+
 .tab-item_list {
   padding-left: 1em;
   margin-bottom: 1.7em;

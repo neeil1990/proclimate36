@@ -130,12 +130,33 @@ $this->setFrameMode(true);
 <div class="tab-container">
     <ul class="selected-product_tab-names">
         <li class="tab active">Описание</li>
-        <li class="tab">Характеристики</li>
+        <? if($arResult['PROPERTIES']['CHAR']): ?>
+            <li class="tab"><?=$arResult['PROPERTIES']['CHAR']['NAME']?></li>
+        <? endif; ?>
         <li class="tab">Оплата и доставка</li>
     </ul>
     <div class="selected-product_content-tabs">
         <div class="tab-item is-visible"><?=$arResult['DETAIL_TEXT']?></div>
-        <div class="tab-item"><?=$arResult['PROPERTIES']['OPTION_TEXT']['~VALUE']['TEXT']?></div>
+        <? if($arResult['PROPERTIES']['CHAR']): ?>
+        <div class="tab-item">
+            <ul class="menu-dot">
+                <? foreach ($arResult['PROPERTIES']['CHAR']['VALUE'] as $desc => $value):
+                    $value = explode('/', $value, 2);
+                    ?>
+                    <li>
+                        <span class="main">
+                            <?=$value[0]?>
+
+                            <? if($value[1]):?>
+                                <span class="question-mark" title="<?=$value[1]?>">?</span>
+                            <? endif; ?>
+                        </span>
+                        <span class="page"><?=$arResult['PROPERTIES']['CHAR']['DESCRIPTION'][$desc]?></span>
+                    </li>
+                <? endforeach; ?>
+            </ul>
+        </div>
+        <? endif; ?>
         <div class="tab-item"><?=$arResult['PROPERTIES']['DELIVERY_TEXT']['~VALUE']['TEXT']?></div>
     </div>
 </div>
