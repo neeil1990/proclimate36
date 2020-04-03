@@ -48,7 +48,10 @@ $this->setFrameMode(true);
                     <span class="product-item_price"><?=$arItem['PRICES']['BASE']['PRINT_VALUE']?></span>
                     <div class="product-item_hidden">
                         <ul class="product-item_features">
-                            <? foreach ($arParams['LIST_PROPERTY_CODE'] as $code):?>
+                            <? foreach ($arParams['LIST_PROPERTY_CODE'] as $code):
+                                if(!$arItem['PROPERTIES'][$code]['VALUE'])
+                                    continue;
+                                ?>
                                 <li>
                                     <span class="<?=($arItem['PROPERTIES'][$code]['HINT']) ?: 'glipf-swing'?>"></span>
                                     <span class="gray-color"><?=$arItem['PROPERTIES'][$code]['NAME']?></span> -

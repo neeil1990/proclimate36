@@ -29,7 +29,7 @@ $this->setFrameMode(true);
                 </div>
                 <div class="product-item_desc">
                     <div class="product_item_desc-top">
-                        <span class="product-item_category"></span>
+                        <span class="product-item_category"><?=$arItem['SECTION']['NAME'];?></span>
                         <div class="product-item_title">
                             <a href="<?=$arItem['DETAIL_PAGE_URL']?>">
                                 <?=$arItem['NAME']?>

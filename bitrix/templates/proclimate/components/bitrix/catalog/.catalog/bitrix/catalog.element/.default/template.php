@@ -19,8 +19,15 @@ $this->setFrameMode(true);
             <span class="selected-product_desc-type"><?=$arResult['SECTION']['NAME']?></span>
             <h1 class="selected-product_title"><?=$arResult['NAME']?></h1>
             <div class="selected-product_bottom-panel">
-                <span class="selected-product_code">Код товара: <?=$arResult['ID']?></span>
-                <span class="selected-product_brand"><img data-src="img/static/brand-product/01.jpg" alt="alt"></span>
+                <? if($arResult['PROPERTIES']['ARTICLE']['VALUE']): ?>
+                <span class="selected-product_code">Код товара: <?=$arResult['PROPERTIES']['ARTICLE']['VALUE']?></span>
+                <?endif;?>
+
+                <? if($arResult['PROPERTIES']['BRAND']['VALUE']): ?>
+                <span class="selected-product_brand">
+                    <img data-src="<?=CFile::GetPath($arResult['PROPERTIES']['BRAND']['VALUE']);?>" alt="<?=$arResult['NAME']?>">
+                </span>
+                <?endif;?>
             </div>
         </div>
 
@@ -51,9 +58,11 @@ $this->setFrameMode(true);
                 <span class="selected-product_desc-type"><?=$arResult['SECTION']['NAME']?></span>
                 <h1 class="selected-product_title"><?=$arResult['NAME']?></h1>
                 <div class="selected-product_bottom-panel">
+                    <span class="selected-product_code">
                     <? if($arResult['PROPERTIES']['ARTICLE']['VALUE']): ?>
-                    <span class="selected-product_code">Код товара: <?=$arResult['PROPERTIES']['ARTICLE']['VALUE']?></span>
+                        Код товара: <?=$arResult['PROPERTIES']['ARTICLE']['VALUE']?>
                     <? endif; ?>
+                    </span>
 
                     <? if($arResult['PROPERTIES']['BRAND']['VALUE']): ?>
                     <span class="selected-product_brand">
