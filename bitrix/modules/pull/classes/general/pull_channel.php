@@ -443,6 +443,10 @@ class CPullChannel
 		else
 		{
 			$result = self::SendCommand($channelId, $message, $options);
+			if($result === false)
+			{
+				return $result;
+			}
 			$result = json_decode($result_start.$result.$result_end);
 		}
 

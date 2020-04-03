@@ -11,8 +11,11 @@ use \Bitrix\Main\Localization\Loc;
 Loc::loadMessages(dirname(__FILE__) . '/template.php');
 
 \Bitrix\Main\UI\Extension::load([
+	'ajax',
 	'landing_master'
 ]);
+
+$disableFrame = $this->getPageName() == 'landing_view';
 
 ob_start();
 ?>
@@ -47,7 +50,7 @@ if ($arParams['SEF_MODE'] != 'Y')
 }
 
 // iframe header
-if ($request->get('IFRAME') == 'Y')
+if ($request->get('IFRAME') == 'Y' && !$disableFrame)
 {
 	\Bitrix\Landing\Manager::getApplication()->restartBuffer();
 	include 'slider_header.php';
@@ -158,6 +161,7 @@ elseif (in_array($this->getPageName(), array('template', 'site_show')))
 							)
 							: array(),
 			'TYPE' => $arParams['TYPE'],
+			'DRAFT_MODE' => $arParams['DRAFT_MODE'],
 			'FOLDER_SITE_ID' => !$folderId ? $arResult['VARS']['site_show'] : 0
 		),
 		$this->__component
@@ -166,13 +170,14 @@ elseif (in_array($this->getPageName(), array('template', 'site_show')))
 	unset($settingsLink);
 }
 
+include __DIR__ . '/popups/agreement.php';
+
 if (
 	$request->get('agreement') == 'Y' &&
 	!$request->get('landing_mode') &&
 	\Bitrix\Landing\Manager::isB24()
 )
 {
-	include __DIR__ . '/popups/agreement.php';
 	?>
 	<script type="text/javascript">
 		BX.ready(function()
@@ -184,4 +189,10 @@ if (
 		});
 	</script>
 	<?
+}
+
+// backward compatibility
+if ($arResult['AGREEMENT_ACCEPTED'])
+{
+	$arResult['AGREEMENT'] = [];
 }

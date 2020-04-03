@@ -140,6 +140,7 @@
 		this.restoreWebSocketTimeout = null;
 
 		this.configGetMethod = typeof params.configGetMethod !== 'string'? 'pull.config.get': params.configGetMethod;
+		this.getPublicListMethod = typeof params.getPublicListMethod !== 'string'? 'pull.channel.public.list': params.getPublicListMethod;
 
 		this.skipStorageInit = params.skipStorageInit === true;
 
@@ -202,7 +203,8 @@
 			storage: this.storage
 		});
 		this.channelManager = new ChannelManager({
-			restClient: this.restClient
+			restClient: this.restClient,
+			getPublicListMethod: this.getPublicListMethod
 		});
 
 		this.notificationPopup = null;
@@ -213,6 +215,8 @@
 
 		// manual stop workaround
 		this.isManualDisconnect = false;
+
+		this.loggingEnabled = this.sharedConfig.isLoggingEnabled();
 	};
 
 	/**
@@ -463,8 +467,11 @@
 
 		if (BX && BX.desktop)
 		{
-			BX.desktop.addCustomEvent("BXLoginSuccess", function ()
-			{
+			BX.addCustomEvent("onDesktopReload", function() {
+				this.session = {};
+			}.bind(this));
+
+			BX.desktop.addCustomEvent("BXLoginSuccess", function() {
 				this.restart(1000, "Desktop login");
 			}.bind(this));
 		}
@@ -861,7 +868,7 @@
 		}
 		else
 		{
-			console.log(Utils.getDateForLog() + ": Stale config detected. Restarting");
+			this.logToConsole("Stale config detected. Restarting");
 			this.restart(CloseReasons.CONFIG_EXPIRED, "Config update required");
 		}
 	};
@@ -989,14 +996,14 @@
 			clearTimeout(this.reconnectTimeout);
 		}
 
-		console.log(Utils.getDateForLog() + ': Pull: scheduling reconnection in ' + connectionDelay + ' seconds; attempt # ' + this.connectionAttempt);
+		this.logToConsole('Pull: scheduling reconnection in ' + connectionDelay + ' seconds; attempt # ' + this.connectionAttempt);
 
 		this.reconnectTimeout = setTimeout(this.connect.bind(this), connectionDelay * 1000);
 	};
 
 	Pull.prototype.scheduleRestoreWebSocketConnection = function()
 	{
-		console.log(Utils.getDateForLog() + ': Pull: scheduling restoration of websocket connection in ' + RESTORE_WEBSOCKET_TIMEOUT + ' seconds');
+		this.logToConsole('Pull: scheduling restoration of websocket connection in ' + RESTORE_WEBSOCKET_TIMEOUT + ' seconds');
 
 		var self = this;
 		if(this.restoreWebSocketTimeout)
@@ -1323,6 +1330,14 @@
 		}, this);
 	};
 
+	Pull.prototype.logToConsole = function(message)
+	{
+		if(this.loggingEnabled)
+		{
+			console.log(Utils.getDateForLog() + ': ' + message);
+		}
+	};
+
 	Pull.prototype.logMessage = function(message)
 	{
 		if(!this.debug)
@@ -1358,7 +1373,7 @@
 			this.offlineTimeout = null;
 		}
 
-		console.log(Utils.getDateForLog() + ': Pull: Long polling connection with push-server opened');
+		this.logToConsole('Pull: Long polling connection with push-server opened');
 		if(this.isWebSocketEnabled())
 		{
 			this.scheduleRestoreWebSocketConnection();
@@ -1408,7 +1423,7 @@
 			clearTimeout(this.offlineTimeout);
 			this.offlineTimeout = null;
 		}
-		console.log(Utils.getDateForLog() + ': Pull: Websocket connection with push-server opened');
+		this.logToConsole('Pull: Websocket connection with push-server opened');
 	};
 
 	Pull.prototype.onWebSocketDisconnect = function(e)
@@ -1433,7 +1448,7 @@
 			e = {};
 		}
 
-		console.log(Utils.getDateForLog() + ': Pull: Websocket connection with push-server closed. Code: ' + e.code + ', reason: ' + e.reason);
+		this.logToConsole('Pull: Websocket connection with push-server closed. Code: ' + e.code + ', reason: ' + e.reason);
 		if(!this.isManualDisconnect)
 		{
 			this.scheduleReconnect();
@@ -1476,7 +1491,7 @@
 			e = {};
 		}
 
-		console.log(Utils.getDateForLog() + ': Pull: Long polling connection with push-server closed. Code: ' + e.code + ', reason: ' + e.reason);
+		this.logToConsole('Pull: Long polling connection with push-server closed. Code: ' + e.code + ', reason: ' + e.reason);
 		if(!this.isManualDisconnect)
 		{
 			this.scheduleReconnect();
@@ -1533,7 +1548,7 @@
 				if (message.params.action == 'reconnect')
 				{
 					this.config.channels[message.params.channel.type] = message.params.new_channel;
-					console.info("Pull: new config for " + message.params.channel.type + " channel set:\n", this.config.channels[message.params.channel.type]);
+					this.logToConsole("Pull: new config for " + message.params.channel.type + " channel set:\n", this.config.channels[message.params.channel.type]);
 
 					this.reconnect(CloseReasons.CONFIG_REPLACED, "config was replaced");
 				}
@@ -1587,7 +1602,7 @@
 				}
 			});
 
-			console.log(Utils.getDateForLog() + ": Pull revision changed from " + REVISION + " to " + serverRevision + ". Reload required");
+			this.logToConsole("Pull revision changed from " + REVISION + " to " + serverRevision + ". Reload required");
 
 			return false;
 		}
@@ -1679,6 +1694,7 @@
 			(this.guestMode && this.guestUserId !== 0? "Guest userId: " + this.guestUserId + "\n":"") +
 			"Browser online: " + (navigator.onLine ? 'Y' : 'N') + "\n" +
 			"Connect: " + (this.isConnected() ? 'Y': 'N') + "\n" +
+			"Server type: " + (this.isSharedMode() ? 'cloud' : 'local') + "\n" +
 			"WebSocket support: " + (this.isWebSocketSupported() ? 'Y': 'N') + "\n" +
 			"WebSocket connect: " + (this._connectors.webSocket && this._connectors.webSocket.connected ? 'Y': 'N') + "\n"+
 			"WebSocket mode: " + (this._connectors.webSocket && this._connectors.webSocket.socket ? (this._connectors.webSocket.socket.url.search("binaryMode=true") != -1 ? "protobuf" : "text") : '-') + "\n"+
@@ -1695,6 +1711,18 @@
 			"================================\n";
 
 		return console.info(text);
+	};
+
+	Pull.prototype.enableLogging = function(loggingFlag)
+	{
+		if(loggingFlag === undefined)
+		{
+			loggingFlag = true;
+		}
+		loggingFlag = loggingFlag === true;
+
+		this.sharedConfig.setLoggingEnabled(loggingFlag);
+		this.loggingEnabled = loggingFlag;
 	};
 
 	Pull.prototype.capturePullEvent = function(debugFlag)
@@ -1943,7 +1971,8 @@
 		this.ttl = 24 * 60 * 60;
 
 		this.lsKeys = {
-			websocketBlocked: 'bx-pull-websocket-blocked'
+			websocketBlocked: 'bx-pull-websocket-blocked',
+			loggingEnabled: 'bx-pull-logging-enabled'
 		};
 
 		this.callbacks = {
@@ -1987,6 +2016,26 @@
 		}
 
 		this.storage.set(this.lsKeys.websocketBlocked, (isWebSocketBlocked ? Utils.getTimestamp()+this.ttl : 0));
+	};
+
+	SharedConfig.prototype.isLoggingEnabled = function()
+	{
+		if (!this.storage)
+		{
+			return false;
+		}
+
+		return this.storage.get(this.lsKeys.loggingEnabled, 0) > Utils.getTimestamp();
+	};
+
+	SharedConfig.prototype.setLoggingEnabled = function(isLoggingEnabled)
+	{
+		if (!this.storage)
+		{
+			return false;
+		}
+
+		this.storage.set(this.lsKeys.loggingEnabled, (isLoggingEnabled ? Utils.getTimestamp()+this.ttl : 0));
 	};
 
 	var ObjectExtend = function(child, parent)
@@ -2353,6 +2402,8 @@
 		this.publicIds = {};
 
 		this.restClient = typeof params.restClient !== "undefined"? params.restClient: BX.rest;
+
+		this.getPublicListMethod = params.getPublicListMethod;
 	};
 
 	/**
@@ -2386,7 +2437,7 @@
 			return promise;
 		}
 
-		this.restClient.callMethod('pull.channel.public.list', {users: unknownUsers}, function(result)
+		this.restClient.callMethod(this.getPublicListMethod, {users: unknownUsers}).then(function(result)
 		{
 			if(result.error())
 			{
@@ -2719,4 +2770,5 @@
 	BX.PullClient.PullStatus = PullStatus;
 	BX.PullClient.SubscriptionType = SubscriptionType;
 	BX.PullClient.CloseReasons = CloseReasons;
+	BX.PullClient.StorageManager = StorageManager;
 })();

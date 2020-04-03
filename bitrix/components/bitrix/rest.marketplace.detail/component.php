@@ -13,7 +13,8 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
  * @global CMain $APPLICATION
  * @global CUser $USER
  */
-
+use \Bitrix\Main\Localization\Loc;
+use \Bitrix\Main\Loader;
 if(!CModule::IncludeModule("rest"))
 {
 	return;
@@ -60,7 +61,6 @@ if($arApp)
 
 	$APPLICATION->SetTitle(htmlspecialcharsbx($arApp["NAME"]));
 
-
 	if($ar)
 	{
 		$arApp["ID"] = $ar["ID"];
@@ -79,7 +79,7 @@ if($arApp)
 		}
 	}
 
-	if ($arApp["ACTIVE"] == "Y")
+	if ($arApp["ACTIVE"] == "Y" && $arApp['TYPE'] !== \Bitrix\Rest\AppTable::TYPE_CONFIGURATION)
 	{
 		$arApp["UPDATES"] = \Bitrix\Rest\Marketplace\Client::getAvailableUpdate($arApp["CODE"]);
 	}
@@ -93,6 +93,21 @@ if($arApp)
 	{
 		$stmp = MakeTimeStamp($arApp["DATE_UPDATE"], "DD.MM.YYYY");
 		$arApp["DATE_UPDATE"] = ConvertTimeStamp($stmp);
+	}
+
+	if ($arApp["BY_SUBSCRIPTION"] == "Y")
+	{
+		if (\Bitrix\Rest\Marketplace\Client::isSubscriptionAvailable())
+		{
+			$arApp["STATUS"] = \Bitrix\Rest\AppTable::STATUS_PAID;
+			$arApp["DATE_FINISH"] = \Bitrix\Rest\Marketplace\Client::getSubscriptionFinalDate();
+		}
+	}
+
+	$arResult['REDIRECT_PRIORITY'] = false;
+	if($arApp['TYPE'] === \Bitrix\Rest\AppTable::TYPE_CONFIGURATION)
+	{
+		$arResult['REDIRECT_PRIORITY'] = true;
 	}
 
 	$arResult["APP"] = $arApp;
@@ -115,19 +130,27 @@ if($request->isPost() && $request['install'] && check_bitrix_sessid())
 	{
 		$obRestDesc = new \CRestProvider();
 		$arRestDesc = $obRestDesc->getDescription();
-
+		\Bitrix\Main\Localization\Loc::loadMessages($_SERVER['DOCUMENT_ROOT'].BX_ROOT.'/modules/rest/scope.php');
 		$arResult['SCOPE_DENIED'] = array();
 		if(is_array($arResult['APP']['RIGHTS']))
 		{
 			foreach($arResult['APP']['RIGHTS'] as $key => $scope)
 			{
+				$arResult['APP']['RIGHTS'][$key] = [
+					"TITLE" => Loc::getMessage("REST_SCOPE_".strtoupper($key)) ?: $scope,
+					"DESCRIPTION" => Loc::getMessage("REST_SCOPE_".strtoupper($key)."_DESCRIPTION")
+				];
 				if(!array_key_exists($key, $arRestDesc))
 				{
 					$arResult['SCOPE_DENIED'][$key] = 1;
 				}
 			}
 		}
-
+		if(Loader::IncludeModule('bitrix24')
+			&& !in_array(\CBitrix24::getLicensePrefix(), array('ru', 'ua', 'kz', 'by')))
+		{
+			$arResult['TERMS_OF_SERVICE_LINK'] = Loc::getMessage('REST_MARKETPLACE_TERMS_OF_SERVICE_LINK');
+		}
 		$arResult['IS_HTTPS'] = \Bitrix\Main\Context::getCurrent()->getRequest()->isHttps();
 
 		$this->includeComponentTemplate('install');
@@ -152,6 +175,29 @@ else
 		}
 	}
 
+	if($arResult['APP']['TYPE'] == \Bitrix\Rest\AppTable::TYPE_CONFIGURATION)
+	{
+		$url = \Bitrix\Rest\Marketplace\Url::getConfigurationImportAppUrl($arResult['APP']['CODE']);
+
+		$request = Bitrix\Main\Application::getInstance()->getContext()->getRequest();
+		$check_hash = $request->getQuery("check_hash");
+		$install_hash = $request->getQuery("install_hash");
+		if($install_hash && $check_hash)
+		{
+			$uri = new Bitrix\Main\Web\Uri($url);
+			$uri->addParams(
+				[
+					'check_hash' => $check_hash,
+					'install_hash' => $install_hash
+				]
+			);
+			$arResult['IMPORT_PAGE'] = $uri->getUri();
+		}
+		else
+		{
+			$arResult['IMPORT_PAGE'] = $url;
+		}
+	}
 	CJSCore::Init(array('marketplace', 'image', 'applayout'));
 
 	$this->IncludeComponentTemplate();

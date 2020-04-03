@@ -988,9 +988,9 @@
 .bx-ie .ui-btn-menu-disabled .ui-btn-menu,
 .bx-ie .ui-btn-menu-disabled .ui-btn-menu:hover,
 .bx-ie .ui-btn-menu-disabled .ui-btn-menu:active {
-	border-color: #3b506e;
-	background-color: #3b506e;
-	color: #fff;
+	/*border-color: #3b506e;*/
+	/*background-color: #3b506e;*/
+	/*color: #fff;*/
 	opacity: .4;
 	cursor: not-allowed;
 }

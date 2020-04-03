@@ -43,7 +43,7 @@ abstract class CPushService
 					}
 
 					$message = static::getMessageInstance($token);
-					$id = rand(1, 10000);
+					$id = random_int(1, 10000);
 					$message->setCustomIdentifier($id);
 					$text = \Bitrix\Main\Text\Encoding::convertEncoding($messageArray["MESSAGE"], SITE_CHARSET, "utf-8");
 					$title = \Bitrix\Main\Text\Encoding::convertEncoding($messageArray["TITLE"], SITE_CHARSET, "utf-8");
@@ -73,19 +73,17 @@ abstract class CPushService
 						);
 					}
 
-
 					if ($messageArray["PARAMS"])
 					{
 						$message->setCustomProperty(
 							'params',
-							(is_array($messageArray["PARAMS"]))
+							is_array($messageArray["PARAMS"])
 								? json_encode($messageArray["PARAMS"])
 								: $messageArray["PARAMS"]
 						);
 					}
 
-
-					if ($messageArray["ADVANCED_PARAMS"] && is_array($messageArray["ADVANCED_PARAMS"]))
+					if (is_array($messageArray["ADVANCED_PARAMS"]))
 					{
 						$messageArray["ADVANCED_PARAMS"] = \Bitrix\Main\Text\Encoding::convertEncoding($messageArray["ADVANCED_PARAMS"], SITE_CHARSET, "UTF-8");
 						if(array_key_exists("senderMessage",$messageArray["ADVANCED_PARAMS"]))
@@ -98,15 +96,12 @@ abstract class CPushService
 							$message->setCustomProperty($param, $value);
 						}
 					}
-
 					$message->setCustomProperty('target', md5($messages[$mess]["USER_ID"] . CMain::GetServerUniqID()));
-
-					$badge = intval($messages[$mess]["BADGE"]);
+					$badge = (int)$messages[$mess]["BADGE"];
 					if (array_key_exists("BADGE", $messages[$mess]) && $badge >= 0)
 					{
 						$message->setBadge($badge);
 					}
-
 
 					if (strlen($batch) > 0)
 					{

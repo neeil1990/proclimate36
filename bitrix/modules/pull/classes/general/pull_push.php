@@ -297,7 +297,7 @@ class CPushManager
 		$devices = [];
 
 		$options = [];
-		if (isset($arParams['IMPORTANT']) && $arParams['IMPORTANT'] == 'Y')
+		if (isset($arParams['IMPORTANT']) && $arParams['IMPORTANT'] === 'Y')
 		{
 			$options['IMPORTANT'] = 'Y';
 		}
@@ -309,13 +309,13 @@ class CPushManager
 			{
 				$params['mode'] = self::SEND_SKIP;
 			}
-			else if ($params['mode'] == self::SEND_DEFERRED && isset($arParams['SEND_IMMEDIATELY']) && $arParams['SEND_IMMEDIATELY'] == 'Y')
+			else if ($params['mode'] == self::SEND_DEFERRED && isset($arParams['SEND_IMMEDIATELY']) && $arParams['SEND_IMMEDIATELY'] === 'Y')
 			{
 				$params['mode'] = self::SEND_IMMEDIATELY;
 			}
 			elseif (
 				in_array($params['mode'], [self::SEND_IMMEDIATELY, self::SEND_IMMEDIATELY_SILENT])
-				&& isset($arParams['SEND_DEFERRED']) && $arParams['SEND_DEFERRED'] == 'Y'
+				&& isset($arParams['SEND_DEFERRED']) && $arParams['SEND_DEFERRED'] === 'Y'
 			)
 			{
 				$params['mode'] = self::SEND_DEFERRED;
@@ -688,6 +688,21 @@ class CPushManager
 		return $aliases;
 	}
 
+	protected function shouldSendMessage(&$message)
+	{
+		$delegates = \Bitrix\Main\EventManager::getInstance()->findEventHandlers("pull", "ShouldMessageBeSent");
+		$shouldBeSent = true;
+		foreach ($delegates as $delegate)
+		{
+			$shouldBeSent = ExecuteModuleEventEx($delegate, [$message]);
+			if (!$shouldBeSent)
+			{
+				break;
+			}
+		}
+		return $shouldBeSent;
+	}
+
 	/**
 	 * @param array $arMessages
 	 * @param array $arDevices
@@ -707,16 +722,7 @@ class CPushManager
 		$arTmpMessages = [];
 		foreach ($arMessages as $message)
 		{
-			$delegates = \Bitrix\Main\EventManager::getInstance()->findEventHandlers("pull", "ShouldMessageBeSent");
-			$shouldBeSent = true;
-			foreach ($delegates as $delegate)
-			{
-				$shouldBeSent = ExecuteModuleEventEx($delegate, [$message]);
-				if (!$shouldBeSent)
-				{
-					break;
-				}
-			}
+			$shouldBeSent = $this->shouldSendMessage($message);
 
 			if (!$message["USER_ID"] || !$shouldBeSent)
 			{
@@ -744,28 +750,30 @@ class CPushManager
 			}
 		}
 
-		$arServicesIDs = array_keys(self::$pushServices);
 		$arPushMessages = [];
 
 		foreach ($arDevices as $arDevice)
 		{
-			if (in_array($arDevice["DEVICE_TYPE"], $arServicesIDs))
+			$deviceType = $arDevice["DEVICE_TYPE"];
+			if (!isset(static::$pushServices[$deviceType]))
 			{
-				$tmpMessage = $arTmpMessages["USER_" . $arDevice["USER_ID"]];
-				$aliases = $this->getAppIDAliases($arDevice["APP_ID"]);
-				$mode = "PRODUCTION";
-				if (
-					$aliases[$arDevice["APP_ID"]] && $aliases[$arDevice["APP_ID"]]["mode"] == "dev"
-					||strpos($arDevice["APP_ID"], "_bxdev") > 0
-				)
-				{
-					$mode = "SANDBOX";
-				}
-				$arPushMessages[$arDevice["DEVICE_TYPE"]][$arDevice["DEVICE_TOKEN"]] = [
-					"messages" => $tmpMessage,
-					"mode" => $mode
-				];
+				continue;
 			}
+
+			$tmpMessage = $arTmpMessages["USER_" . $arDevice["USER_ID"]];
+			$aliases = $this->getAppIDAliases($arDevice["APP_ID"]);
+			$mode = "PRODUCTION";
+			if (
+				$aliases[$arDevice["APP_ID"]] && $aliases[$arDevice["APP_ID"]]["mode"] == "dev"
+				||strpos($arDevice["APP_ID"], "_bxdev") > 0
+			)
+			{
+				$mode = "SANDBOX";
+			}
+			$arPushMessages[$deviceType][$arDevice["DEVICE_TOKEN"]] = [
+				"messages" => $tmpMessage,
+				"mode" => $mode
+			];
 		}
 
 		if (empty($arPushMessages))
@@ -780,40 +788,36 @@ class CPushManager
 		 */
 		$batchMessageCount = CPullOptions::GetPushMessagePerHit();
 		$useChunks = ($batchMessageCount > 0);
-		foreach ($arServicesIDs as $serviceID)
+		if(!$useChunks)
 		{
-			if ($arPushMessages[$serviceID])
+			$batches[0] = "";
+		}
+		foreach (static::$pushServices as $serviceID => $serviceFields)
+		{
+			$className = $serviceFields["CLASS"];
+			if (!$arPushMessages[$serviceID])
 			{
-				if (class_exists(self::$pushServices[$serviceID]["CLASS"]))
-				{
-					$obPush = new self::$pushServices[$serviceID]["CLASS"];
-					if (method_exists($obPush, "getBatch"))
-					{
-						if(!$useChunks)
-						{
-							if(count($batches) > 0)
-							{
-								$batches[0] .= $obPush->getBatch($arPushMessages[$serviceID]);
-							}
-							else
-							{
-								$batches[] = $obPush->getBatch($arPushMessages[$serviceID]);
-							}
-						}
-						else
-						{
-							$offset = 0;
-							$counter = 1;
-							$messages = null;
-							while($messages = array_slice($arPushMessages[$serviceID],$offset, $batchMessageCount))
-							{
-								$batches[] = $obPush->getBatch($messages);
-								$offset += count($messages);
-								$counter++;
-							}
-						}
+				continue;
+			}
+			if (!class_exists($className) || !method_exists($className, "getBatch"))
+			{
+				continue;
+			}
 
-					}
+			$obPush = new $className;
+
+			if(!$useChunks)
+			{
+				$batches[0] .= $obPush->getBatch($arPushMessages[$serviceID]);
+			}
+			else
+			{
+				$offset = 0;
+				$messages = null;
+				while($messages = array_slice($arPushMessages[$serviceID],$offset, $batchMessageCount))
+				{
+					$batches[] = $obPush->getBatch($messages);
+					$offset += count($messages);
 				}
 			}
 		}

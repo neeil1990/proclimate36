@@ -6,6 +6,7 @@ if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED!==true)
 
 use \Bitrix\Crm\WebForm\Preset;
 use \Bitrix\Landing\Rights;
+use \Bitrix\Landing\Role;
 use \Bitrix\Landing\Block;
 use \Bitrix\Landing\Manager;
 use \Bitrix\Main\Localization\Loc;
@@ -46,9 +47,21 @@ if (Loader::includeModule('crm'))
 // refresh block repo
 Manager::checkRepositoryVersion();
 Block::getRepository();
+$arParams['TYPE'] = isset($arParams['TYPE']) ? $arParams['TYPE'] : '';
+$arParams['STRICT_TYPE'] = isset($arParams['STRICT_TYPE']) ? $arParams['STRICT_TYPE'] : 'N';
 
 Manager::setPageTitle(
 	Loc::getMessage('LANDING_CMP_TITLE')
+);
+
+if (!\Bitrix\Landing\Site\Type::isEnabled($arParams['TYPE']))
+{
+	Showerror(Loc::getMessage('LANDING_CMP_TYPE_IS_NOT_ENABLED'));
+	return;
+}
+
+\Bitrix\Landing\Site\Type::setScope(
+	$arParams['TYPE']
 );
 
 // check rights
@@ -65,11 +78,7 @@ if (Loader::includeModule('bitrix24'))
 		return;
 	}
 }
-if (
-	!\Bitrix\Landing\Rights::hasAdditionalRight(
-		\Bitrix\Landing\Rights::ADDITIONAL_RIGHTS['menu24']
-	)
-)
+if (!Rights::hasAdditionalRight(Rights::ADDITIONAL_RIGHTS['menu24']))
 {
 	Manager::getApplication()->showAuthForm(
 		Loc::getMessage('LANDING_CMP_ACCESS_DENIED2')
@@ -130,6 +139,7 @@ $landingTypes = \Bitrix\Landing\Site::getTypes();
 
 // template vars
 $arResult['AGREEMENT'] = array();
+$arResult['AGREEMENT_ACCEPTED'] = false;
 $arResult['CHECK_FEATURE_PERM'] = Manager::checkFeature(
 	Manager::FEATURE_PERMISSIONS_AVAILABLE
 );
@@ -138,6 +148,13 @@ $arParams['SEF_MODE'] = isset($arParams['SEF_MODE']) ? $arParams['SEF_MODE'] : '
 $arParams['SEF_FOLDER'] = isset($arParams['SEF_FOLDER']) ? $arParams['SEF_FOLDER'] : '/';
 $arParams['SEF_URL_TEMPLATES'] = isset($arParams['SEF_URL_TEMPLATES']) ? $arParams['SEF_URL_TEMPLATES'] : array();
 $arParams['VARIABLE_ALIASES'] = isset($arParams['VARIABLE_ALIASES']) ? $arParams['VARIABLE_ALIASES'] : array();
+$arParams['TILE_LANDING_MODE'] = isset($arParams['TILE_LANDING_MODE']) ? $arParams['TILE_LANDING_MODE'] : 'edit';
+$arParams['TILE_SITE_MODE'] = isset($arParams['TILE_SITE_MODE']) ? $arParams['TILE_SITE_MODE'] : 'list';
+$arParams['EDIT_FULL_PUBLICATION'] = isset($arParams['EDIT_FULL_PUBLICATION']) ? $arParams['EDIT_FULL_PUBLICATION'] : 'N';
+$arParams['EDIT_PANEL_LIGHT_MODE'] = isset($arParams['EDIT_PANEL_LIGHT_MODE']) ? $arParams['EDIT_PANEL_LIGHT_MODE'] : 'N';
+$arParams['EDIT_DONT_LEAVE_FRAME'] = isset($arParams['EDIT_DONT_LEAVE_FRAME']) ? $arParams['EDIT_DONT_LEAVE_FRAME'] : 'N';
+$arParams['REOPEN_LOCATION_IN_SLIDER'] = isset($arParams['REOPEN_LOCATION_IN_SLIDER']) ? $arParams['REOPEN_LOCATION_IN_SLIDER'] : 'N';
+$arParams['DRAFT_MODE'] = isset($arParams['DRAFT_MODE']) ? $arParams['DRAFT_MODE'] : 'N';
 foreach ($defaultUrlTemplates404 as $pageCode => $pagePath)
 {
 	if (!isset($arParams['SEF_URL_TEMPLATES'][$pageCode]))
@@ -145,10 +162,7 @@ foreach ($defaultUrlTemplates404 as $pageCode => $pagePath)
 		$arParams['SEF_URL_TEMPLATES'][$pageCode] = $pagePath;
 	}
 }
-if (
-	!isset($arParams['TYPE']) ||
-	!isset($landingTypes[$arParams['TYPE']])
-)
+if (!$arParams['TYPE'] ||  !isset($landingTypes[$arParams['TYPE']]))
 {
 	$arParams['TYPE'] = \Bitrix\Landing\Site::getDefaultType();
 }
@@ -336,10 +350,7 @@ if (
 else
 {
 	$arResult['ACCESS_SITE_NEW'] = (
-		Rights::hasAdditionalRight(
-			Rights::ADDITIONAL_RIGHTS['create']
-		)
-		&&
+		Rights::hasAdditionalRight(Rights::ADDITIONAL_RIGHTS['create']) &&
 		in_array(Rights::ACCESS_TYPES['edit'], $rights)
 	)
 		? 'Y' : 'N';
@@ -363,6 +374,7 @@ if (
 }
 
 $currentLang = LANGUAGE_ID;
+$currentZone = Manager::getZone();
 $agreementCode = 'landing_agreement';
 $agreementsId = array();
 $agreements = array(
@@ -381,9 +393,24 @@ $virtualLangs = array(
 // actual from lang-file
 foreach ($agreements as $lng => $item)
 {
-	if (file_exists(__DIR__ . '/lang/' . $lng . '/component.php'))
+	$fileLng = ($currentZone == 'kz') ? 'kz' : $lng;
+	$fileLng = ($currentZone == 'by') ? 'by' : $lng;
+
+	if (
+		$currentZone == 'by' ||
+		$currentZone == 'kz'
+	)
 	{
-		include __DIR__ . '/lang/' . $lng . '/component.php';
+		$langFile = __DIR__ . '/lang/' . $lng . '/component_' . $currentZone . '.php';
+	}
+	else
+	{
+		$langFile = __DIR__ . '/lang/' . $lng . '/component.php';
+	}
+
+	if (file_exists($langFile))
+	{
+		include $langFile;
 		$agreements[$lng] = array(
 			'ID' => 0,
 			'NAME' => isset($MESS['LANDING_CMP_AGREEMENT_NAME'])
@@ -414,7 +441,8 @@ $res = AgreementTable::getList(array(
 		'ID',
 		'NAME',
 		'TEXT' => 'AGREEMENT_TEXT',
-		'LANGUAGE_ID'
+		'LANGUAGE_ID',
+		'LABEL_TEXT'
 	),
 	'filter' => array(
 		'=ACTIVE' => 'Y',
@@ -437,10 +465,17 @@ while ($row = $res->fetch())
 		$row['TEXT'] != $actual['TEXT']
 	)
 	{
-		AgreementTable::update($row['ID'], array(
+		AgreementTable::update($row['ID'], [
 			'NAME' => $actual['NAME'],
-			'AGREEMENT_TEXT' => $actual['TEXT']
-		));
+			'AGREEMENT_TEXT' => $actual['TEXT'],
+			'LABEL_TEXT' => Loc::getMessage('LANDING_CMP_AGREEMENT_LABEL')
+		]);
+	}
+	else if (!$row['LABEL_TEXT'])
+	{
+		AgreementTable::update($row['ID'], [
+			'LABEL_TEXT' => Loc::getMessage('LANDING_CMP_AGREEMENT_LABEL')
+		]);
 	}
 	$agreements[$row['LANGUAGE_ID']]['ID'] = $row['ID'];
 }
@@ -455,7 +490,8 @@ foreach ($agreements as $lng => $agreement)
 			'LANGUAGE_ID' => $lng,
 			'TYPE' => Agreement::TYPE_CUSTOM,
 			'NAME' => $agreement['NAME'],
-			'AGREEMENT_TEXT' => $agreement['TEXT']
+			'AGREEMENT_TEXT' => $agreement['TEXT'],
+			'LABEL_TEXT' => Loc::getMessage('LANDING_CMP_AGREEMENT_LABEL')
 		));
 		if ($res->isSuccess())
 		{
@@ -488,7 +524,7 @@ elseif (
 }
 else
 {
-	$redirectIfUnAcept = true;
+	$redirectIfUnAccept = true;
 }
 
 // check accepted
@@ -500,8 +536,8 @@ $res = ConsentTable::getList(array(
 ));
 if ($res->fetch())
 {
-	$redirectIfUnAcept = false;
-	$arResult['AGREEMENT'] = array();
+	$redirectIfUnAccept = false;
+	$arResult['AGREEMENT_ACCEPTED'] = true;
 }
 
 // accept
@@ -519,8 +555,8 @@ if (
 
 // if not accept and don't exist agreement
 if (
-	isset($redirectIfUnAcept) &&
-	$redirectIfUnAcept === true
+	isset($redirectIfUnAccept) &&
+	$redirectIfUnAccept === true
 )
 {
 	LocalRedirect(SITE_DIR, true);

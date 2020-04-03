@@ -11,8 +11,10 @@ $request = $context->getRequest();
 
 Loc::loadMessages(dirname(__FILE__) . '/template.php');
 
+$disableFrame = $this->getTemplatePage() == 'landing_view';
+
 // iframe footer
-if ($request->get('IFRAME') == 'Y')
+if ($request->get('IFRAME') == 'Y' && !$disableFrame)
 {
 	include 'slider_footer.php';
 	\CMain::finalActions();
@@ -34,7 +36,9 @@ if ($arParams['SHOW_MENU'] != 'Y')
 // menu items
 $menuItems = [
 	[
-		'TEXT' => Loc::getMessage('LANDING_TPL_MENU_SITES'),
+		'TEXT' => ($title = Loc::getMessage('LANDING_TPL_MENU_SITES_' . $arParams['TYPE']))
+					? $title
+					: Loc::getMessage('LANDING_TPL_MENU_SITES'),
 		'URL' => $arParams['PAGE_URL_SITES'],
 		'ID' => 'default',
 		'IS_ACTIVE' => 0,
@@ -54,6 +58,15 @@ if (\Bitrix\Landing\Rights::isAdmin())
 		'PAGE' => ['roles', 'role_edit']
 	];
 }
+$menuItems[] = [
+	'TEXT' => Loc::getMessage('LANDING_TPL_MENU_AGREEMENT'),
+	'URL' => '#',
+	'ON_CLICK' => 'landingAgreementPopup();',
+	'ID' => 'agreement',
+	'IS_ACTIVE' => 0,
+	'COUNTER' => 0,
+	'COUNTER_ID' => 'agreement'
+];
 $page = $this->getTemplatePage();
 $menuItems = array_values($menuItems);
 

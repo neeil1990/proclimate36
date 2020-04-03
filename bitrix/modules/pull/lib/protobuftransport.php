@@ -194,6 +194,10 @@ class ProtobufTransport
 			'params' => $event['params'] ?: [],
 			'extra' => $extra
 		));
+
+		// for statistics
+		$messageType = "{$event['module_id']}_{$event['command']}";
+		$messageType = preg_replace("/[^\w]/", "", $messageType);
 		
 		$maxChannelsPerRequest = \CPullOptions::GetMaxChannelsPerRequest();
 		$receivers = [];
@@ -210,6 +214,7 @@ class ProtobufTransport
 				$message->setReceiversList(new MessageCollection($receivers));
 				$message->setExpiry($event['expire']);
 				$message->setBody($body);
+				$message->setType($messageType); // for statistics
 
 				$result[] = $message;
 				$receivers = [];
