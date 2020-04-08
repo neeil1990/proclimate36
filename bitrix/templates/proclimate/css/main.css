@@ -1098,15 +1098,15 @@ h4, .h4 {
 
 @media only screen and (min-width: 1025px) {
   .fixed-menu .head-catalog:hover .head-catalog_dropdown {
-    max-height: 100vh;
+    max-height: 80vh;
     overflow: auto;
   }
   .head-catalog:hover {
     background-color: #e4eef3;
   }
   .head-catalog:hover .head-catalog_dropdown {
-    max-height: 1000px;
-    overflow: visible;
+    max-height: 70vh;
+    overflow: auto;
   }
   .catalog-dropdown_menu li.parent:hover .catalog-dropdown_submenu {
     display: block;
@@ -1218,8 +1218,8 @@ h4, .h4 {
 
 .catalog-dropdown_submenu {
   display: none;
-  position: absolute;
-  background: #fff;
+  padding-left: 1em;
+  background: #E4EEF3;
   top: 0;
   left: 100%;
   min-width: 226px;
@@ -1367,28 +1367,28 @@ h4, .h4 {
   background: #E4EEF3;
 }
 
-.fixed-menu .catalog-dropdown_menu li.parent > a:after {
+.catalog-dropdown_menu li.parent > a:after {
   -webkit-transform: rotate(135deg);
       -ms-transform: rotate(135deg);
           transform: rotate(135deg);
 }
 
-.fixed-menu .head-catalog_dropdown::-webkit-scrollbar-track {
+.head-catalog_dropdown::-webkit-scrollbar-track {
   background-color: #E6E6E6;
 }
 
-.fixed-menu .head-catalog_dropdown::-webkit-scrollbar-thumb {
+.head-catalog_dropdown::-webkit-scrollbar-thumb {
   -webkit-border-radius: 2px;
   border-radius: 2px;
   background-color: #B4B4B4;
 }
 
-.fixed-menu .head-catalog_dropdown::-webkit-resizer {
+.head-catalog_dropdown::-webkit-resizer {
   width: 6px;
   height: 0px;
 }
 
-.fixed-menu .head-catalog_dropdown::-webkit-scrollbar {
+.head-catalog_dropdown::-webkit-scrollbar {
   width: 6px;
 }
 
