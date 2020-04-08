@@ -51,6 +51,27 @@ $this->setFrameMode(true);
 <? endif; ?>
 <!-- end services-detailed_box -->
 
+<? if($arResult['PROPERTIES']['PRICE_LIST']['DESCRIPTION']): ?>
+    <div class="services-detailed_box">
+        <div class="services-detailed_box-title"><?=$arResult['PROPERTIES']['PRICE_LIST']['NAME']?></div>
+
+        <? foreach ($arResult['PROPERTIES']['PRICE_LIST']['DESCRIPTION'] as $key => $name):
+            $arName = explode('|', $name, 2);
+            ?>
+            <div class="services-detailed_work-item">
+                <div class="services-detailed_work-item_header">
+                    <span class="left-column"><?=$arName[0]?></span>
+                    <span class="right-column"><?=$arName[1]?></span>
+                </div>
+                <div class="services-detailed_work-item_body">
+                    <?=$arResult['PROPERTIES']['PRICE_LIST']['~VALUE'][$key]['TEXT']?>
+                </div>
+            </div>
+        <? endforeach; ?>
+    </div>
+<? endif; ?>
+<!-- end services-detailed_box -->
+
 <? if($arResult['PROPERTIES']['WORK']['DESCRIPTION']): ?>
 <div class="services-detailed_box">
     <div class="services-detailed_box-title"><?=$arResult['PROPERTIES']['WORK']['NAME']?></div>
