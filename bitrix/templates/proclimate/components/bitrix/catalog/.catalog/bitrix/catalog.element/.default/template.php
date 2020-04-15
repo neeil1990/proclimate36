@@ -34,13 +34,21 @@ $this->setFrameMode(true);
         <div class="selected-product_large-slider js-big-slider-img">
             <? foreach ($arResult['PROPERTIES']['GALLERY']['VALUE'] as $key => $gallery):?>
                 <a href="<?=$gallery?>" class="fancybox selected-product_large-img" data-fancybox="group">
-                <img data-src="<?=$gallery?>" alt="<?=$arResult['NAME']?>">
-                <?
-                if($arResult['PROPERTIES']['MARK']['VALUE_XML_ID'])
-                    include('mark/'.$arResult['PROPERTIES']['MARK']['VALUE_XML_ID'].'.php');
-                ?>
-            </a>
+                    <img data-src="<?=$gallery?>" alt="<?=$arResult['NAME']?>">
+                    <?
+                    if($arResult['PROPERTIES']['MARK']['VALUE_XML_ID'])
+                        include('mark/'.$arResult['PROPERTIES']['MARK']['VALUE_XML_ID'].'.php');
+                    ?>
+                </a>
             <? endforeach; ?>
+
+            <? if($arResult['PROPERTIES']['YOUTUBE']['VALUE']): ?>
+                <? foreach ($arResult['PROPERTIES']['YOUTUBE']['VALUE'] as $video):?>
+                    <a class="fancybox selected-product_large-img" data-fancybox="group" data-width="800" data-height="600" href="https://www.youtube.com/watch?v=<?=$video?>">
+                        <img data-src="http://img.youtube.com/vi/<?=$video?>/sddefault.jpg">
+                    </a>
+                <? endforeach; ?>
+            <? endif; ?>
         </div>
         <!-- end selected-product-large-img -->
         <ul class="selected-product_small-slider js-miniature-pictures">
@@ -49,6 +57,16 @@ $this->setFrameMode(true);
                 <img data-src="<?=$gallery?>" alt="<?=$arResult['NAME']?>">
             </li>
             <? endforeach; ?>
+
+            <? if($arResult['PROPERTIES']['YOUTUBE']['VALUE']): ?>
+                <? foreach ($arResult['PROPERTIES']['YOUTUBE']['VALUE'] as $video):?>
+                    <li>
+                        <a class="fancybox" data-fancybox="" data-width="800" data-height="600" href="https://www.youtube.com/watch?v=<?=$video?>">
+                            <img data-src="<?=SITE_TEMPLATE_PATH?>/img/icons/video.jpg">
+                        </a>
+                    </li>
+                <? endforeach; ?>
+            <? endif; ?>
         </ul>
         <!-- end realty-detailed-small-slider -->
     </div>
