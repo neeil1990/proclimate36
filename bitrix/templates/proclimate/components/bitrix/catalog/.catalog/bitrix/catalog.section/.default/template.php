@@ -11,7 +11,6 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
-
 ?>
 <div class="row catalog-product_content">
     <? if (!empty($arResult['ITEMS'])): ?>
@@ -29,7 +28,15 @@ $this->setFrameMode(true);
                 </div>
                 <div class="product-item_desc">
                     <div class="product_item_desc-top">
-                        <span class="product-item_category"><?=$arItem['SECTION']['NAME'];?></span>
+                        <? if(in_array($arItem['IBLOCK_SECTION_ID'], ['12', '21'])):?>
+                            <?if($arItem['PROPERTIES']['VERSOIN']['VALUE']):?>
+                                <span class="product-item_category">Серия:<br/><?=$arItem['PROPERTIES']['VERSOIN']['VALUE']?></span>
+                            <?else:?>
+                                <span class="product-item_category"><?=$arItem['SECTION']['NAME'];?></span>
+                            <?endif;?>
+                        <?else:?>
+                            <span class="product-item_category"><?=$arItem['SECTION']['NAME'];?></span>
+                        <?endif;?>
                         <div class="product-item_title">
                             <a href="<?=$arItem['DETAIL_PAGE_URL']?>">
                                 <?=$arItem['NAME']?>
